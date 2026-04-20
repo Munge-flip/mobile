@@ -11,7 +11,7 @@
 <body class="bg-[#f0f9f9] min-h-screen pb-24">
 
     <!-- Header -->
-    <header class="p-4 flex justify-between items-center sticky top-0 z-50 bg-[#064e3b] text-white shadow-lg">
+    <header class="p-4 flex justify-between items-center sticky top-0 z-50 bg-[#1e1e1e]/90 backdrop-blur-md border-b border-white/10 text-white">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-full border-2 border-emerald-400 overflow-hidden">
                 <img src="../public/img/yours.png" class="w-full h-full object-cover">
@@ -67,7 +67,7 @@
     </main>
 
     <!-- Agent Bottom Nav -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-[#064e3b] text-emerald-200/50 px-6 py-3 flex justify-between items-center z-50 shadow-[0_-10px_30px_rgba(0,0,0,0.1)]">
+    <nav class="fixed bottom-0 left-0 right-0 bg-[#1e1e1e]/95 backdrop-blur-lg border-t border-white/10 px-6 py-3 flex justify-between items-center z-50 text-white/50">
         <a href="agent-dashboard.html" class="flex flex-col items-center gap-1 text-emerald-400">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
             <span class="text-[10px] font-bold uppercase">Stats</span>
@@ -76,7 +76,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
             <span class="text-[10px] font-bold uppercase">Tasks</span>
         </a>
-        <a href="user-chat.html" class="flex flex-col items-center gap-1">
+        <a href="agent-chat.html" class="flex flex-col items-center gap-1">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" /></svg>
             <span class="text-[10px] font-bold uppercase">Chat</span>
         </a>
