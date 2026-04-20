@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Transactions - Admin Mobile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Syne', sans-serif; }</style>
+</head>
+<body class="bg-[#f1f5f9] min-h-screen pb-24">
+
+    <!-- Header -->
+    <header class="p-4 flex items-center gap-4 sticky top-0 z-50 bg-[#1e293b] text-white shadow-lg">
+        <a href="admin-dashboard.html" class="p-2 bg-white/10 rounded-xl">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </a>
+        <h1 class="text-lg font-bold tracking-tight">Transactions</h1>
+    </header>
+
+    <main class="p-4 space-y-4">
+        <!-- Filter Tabs -->
+        <div class="flex gap-2 overflow-x-auto pb-2 hide-scrollbar">
+            <button class="px-6 py-2 bg-blue-600 text-white text-xs font-bold rounded-full whitespace-nowrap">All</button>
+            <button class="px-6 py-2 bg-white text-slate-500 text-xs font-bold rounded-full border border-slate-100">Pending</button>
+            <button class="px-6 py-2 bg-white text-slate-500 text-xs font-bold rounded-full border border-slate-100">Verified</button>
+        </div>
+
+        <!-- Transaction Card 1 -->
+        <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100">
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-orange-50 text-orange-500 flex items-center justify-center font-bold">G</div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-sm">GCash Payment</h3>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">TRX-9821-HP</p>
+                    </div>
+                </div>
+                <p class="text-lg font-black text-slate-800">₱120.00</p>
+            </div>
+            <div class="flex justify-between items-center pt-4 border-t border-slate-50">
+                <span class="px-3 py-1 bg-yellow-50 text-yellow-600 text-[10px] font-black uppercase rounded-full">Pending Verification</span>
+                <a href="admin-transaction-details.html" class="text-blue-600 font-bold text-xs uppercase tracking-tighter">Review Proof</a>
+            </div>
+        </div>
+
+        <!-- Transaction Card 2 -->
+        <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100">
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center font-bold">P</div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-sm">PayPal Transfer</h3>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">TRX-7712-HP</p>
+                    </div>
+                </div>
+                <p class="text-lg font-black text-slate-800">₱500.00</p>
+            </div>
+            <div class="flex justify-between items-center pt-4 border-t border-slate-50">
+                <span class="px-3 py-1 bg-green-50 text-green-600 text-[10px] font-black uppercase rounded-full">Verified</span>
+                <span class="text-[10px] text-slate-300 font-bold uppercase">2h ago</span>
+            </div>
+        </div>
+    </main>
+
+    <!-- Navigation included in actual implementation -->
+</body>
+</html>
