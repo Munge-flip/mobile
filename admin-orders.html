@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Orders - Admin Mobile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Syne', sans-serif; }</style>
+</head>
+<body class="bg-[#f1f5f9] min-h-screen pb-24">
+
+    <!-- Header -->
+    <header class="p-4 flex items-center gap-4 sticky top-0 z-50 bg-[#1e293b] text-white shadow-lg">
+        <a href="admin-dashboard.html" class="p-2 bg-white/10 rounded-xl">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </a>
+        <h1 class="text-lg font-bold tracking-tight">Order Queue</h1>
+    </header>
+
+    <main class="p-4 space-y-4">
+        
+        <!-- Filter Tabs -->
+        <div class="flex gap-2 overflow-x-auto pb-2 hide-scrollbar">
+            <button class="px-6 py-2 bg-blue-600 text-white text-xs font-bold rounded-full whitespace-nowrap shadow-lg shadow-blue-100">Pending</button>
+            <button class="px-6 py-2 bg-white text-slate-500 text-xs font-bold rounded-full border border-slate-100 whitespace-nowrap">Assigned</button>
+            <button class="px-6 py-2 bg-white text-slate-500 text-xs font-bold rounded-full border border-slate-100 whitespace-nowrap">Completed</button>
+        </div>
+
+        <!-- Order Card -->
+        <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100">
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <h3 class="font-black text-slate-800 uppercase tracking-tighter">Order #HP-992</h3>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Genshin Impact</p>
+                </div>
+                <span class="px-3 py-1 bg-yellow-50 text-yellow-600 text-[10px] font-black uppercase tracking-widest rounded-full">Unassigned</span>
+            </div>
+            
+            <div class="space-y-2 mb-6">
+                <div class="flex justify-between text-sm">
+                    <span class="text-slate-500">Service:</span>
+                    <span class="text-slate-800 font-bold">100% Map Completion</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-slate-500">Customer:</span>
+                    <span class="text-blue-600 font-bold">User@4421</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-slate-500">Price:</span>
+                    <span class="text-slate-800 font-black">₱500.00</span>
+                </div>
+            </div>
+
+            <div class="flex gap-2">
+                <button class="flex-1 py-3 bg-blue-600 text-white text-xs font-bold rounded-xl active:scale-95 transition-transform">
+                    ASSIGN AGENT
+                </button>
+                <button class="w-12 h-12 flex items-center justify-center bg-slate-100 text-slate-500 rounded-xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Order Card 2 -->
+        <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 opacity-60">
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <h3 class="font-black text-slate-800 uppercase tracking-tighter">Order #HP-989</h3>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">HSR</p>
+                </div>
+                <span class="px-3 py-1 bg-blue-50 text-blue-600 text-[10px] font-black uppercase tracking-widest rounded-full">Assigned</span>
+            </div>
+            
+            <div class="space-y-1 mb-4 text-xs">
+                <p><span class="text-slate-400">Agent:</span> <span class="font-bold">Agent_Silver</span></p>
+            </div>
+
+            <button class="w-full py-3 bg-slate-50 text-slate-400 text-xs font-bold rounded-xl" disabled>
+                IN PROGRESS
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Bottom Admin Nav -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-[#1e293b] text-white/50 px-6 py-3 flex justify-between items-center z-50">
+        <a href="admin-dashboard.html" class="flex flex-col items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+            <span class="text-[10px] font-bold uppercase">Stats</span>
+        </a>
+        <a href="admin-orders.html" class="flex flex-col items-center gap-1 text-blue-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            <span class="text-[10px] font-bold uppercase">Orders</span>
+        </a>
+        <a href="admin-agents.html" class="flex flex-col items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+            <span class="text-[10px] font-bold uppercase">Agents</span>
+        </a>
+        <a href="#" class="flex flex-col items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /></svg>
+            <span class="text-[10px] font-bold uppercase">Settings</span>
+        </a>
+    </nav>
+
+</body>
+</html>
