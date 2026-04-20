@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with Agent - Mobile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Syne', sans-serif; }</style>
+</head>
+<body class="bg-[#f8fafc] h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="p-4 flex items-center justify-between bg-white border-b border-gray-100 shadow-sm z-10">
+        <div class="flex items-center gap-3">
+            <a href="user-order-details.html" class="text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </a>
+            <div class="flex items-center gap-2">
+                <div class="relative">
+                    <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold">A</div>
+                    <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
+                </div>
+                <div>
+                    <h1 class="text-sm font-bold text-gray-800">Support Agent</h1>
+                    <p class="text-[10px] text-green-500 font-bold uppercase tracking-widest">Online</p>
+                </div>
+            </div>
+        </div>
+        <button class="text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+            </svg>
+        </button>
+    </header>
+
+    <!-- Chat Messages -->
+    <main class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+        <div class="text-center">
+            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-gray-100 px-3 py-1 rounded-full">Today</span>
+        </div>
+
+        <!-- Agent Message -->
+        <div class="flex items-end gap-2 max-w-[80%]">
+            <div class="flex-1 bg-white p-4 rounded-2xl rounded-bl-none shadow-sm border border-gray-100">
+                <p class="text-sm text-gray-700">Hello Traveler! I've received your order for the Spiral Abyss clear. Do you have your login details ready?</p>
+                <span class="text-[9px] text-gray-400 mt-2 block text-right">09:41 AM</span>
+            </div>
+        </div>
+
+        <!-- User Message -->
+        <div class="flex items-end gap-2 max-w-[80%] ml-auto">
+            <div class="flex-1 bg-purple-600 p-4 rounded-2xl rounded-br-none shadow-lg shadow-purple-100 text-white">
+                <p class="text-sm">Yes! I've just uploaded the proof of payment as well. Can we start now?</p>
+                <span class="text-[9px] text-purple-200 mt-2 block text-right">09:42 AM</span>
+            </div>
+        </div>
+
+        <!-- Agent Message -->
+        <div class="flex items-end gap-2 max-w-[80%]">
+            <div class="flex-1 bg-white p-4 rounded-2xl rounded-bl-none shadow-sm border border-gray-100">
+                <p class="text-sm">Perfect. Let me verify the payment first. I'll get back to you in a few minutes!</p>
+                <span class="text-[9px] text-gray-400 mt-2 block text-right">09:43 AM</span>
+            </div>
+        </div>
+    </main>
+
+    <!-- Chat Input -->
+    <footer class="p-4 bg-white border-t border-gray-100 flex items-center gap-3">
+        <button class="p-2 text-gray-400 hover:text-purple-600 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+            </svg>
+        </button>
+        <div class="flex-1 relative">
+            <input type="text" placeholder="Type a message..." class="w-full bg-gray-100 border-none rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500 outline-none">
+        </div>
+        <button class="p-3 bg-purple-600 text-white rounded-2xl shadow-lg shadow-purple-200 active:scale-95 transition-transform">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+            </svg>
+        </button>
+    </footer>
+
+</body>
+</html>
