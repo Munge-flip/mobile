@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Genshin Services - Admin Mobile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Syne', sans-serif; }</style>
+</head>
+<body class="bg-[#f1f5f9] min-h-screen pb-24">
+
+    <!-- Header -->
+    <header class="p-4 flex items-center justify-between sticky top-0 z-50 bg-[#1e293b] text-white shadow-lg">
+        <div class="flex items-center gap-4">
+            <a href="admin-dashboard.html" class="p-2 bg-white/10 rounded-xl">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </a>
+            <h1 class="text-lg font-bold tracking-tight">Genshin Services</h1>
+        </div>
+        <button class="p-2 bg-blue-500 rounded-xl text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+        </button>
+    </header>
+
+    <main class="p-4 space-y-6">
+        <!-- Navigation Tabs -->
+        <div class="flex gap-2 overflow-x-auto pb-2 hide-scrollbar">
+            <a href="admin-services-genshin.html" class="px-6 py-2 bg-blue-600 text-white text-xs font-bold rounded-full whitespace-nowrap">Genshin</a>
+            <a href="admin-services-hsr.html" class="px-6 py-2 bg-white text-slate-500 text-xs font-bold rounded-full border border-slate-100 whitespace-nowrap">Star Rail</a>
+            <a href="admin-services-zzz.html" class="px-6 py-2 bg-white text-slate-500 text-xs font-bold rounded-full border border-slate-100 whitespace-nowrap">ZZZ</a>
+        </div>
+
+        <!-- Dynamic Category Generator (Example mapping all services) -->
+        <div class="space-y-6">
+            <!-- Maintenance -->
+            <section>
+                <h2 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">Maintenance</h2>
+                <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 divide-y divide-slate-50">
+                    <div class="p-4 flex justify-between items-center">
+                        <span class="font-bold text-slate-700 text-sm">Daily</span>
+                        <span class="font-black text-blue-600 text-sm">₱57</span>
+                    </div>
+                    <div class="p-4 flex justify-between items-center">
+                        <span class="font-bold text-slate-700 text-sm">Weekly</span>
+                        <span class="font-black text-blue-600 text-sm">₱300</span>
+                    </div>
+                    <div class="p-4 flex justify-between items-center">
+                        <span class="font-bold text-slate-700 text-sm">Full Patch</span>
+                        <span class="font-black text-blue-600 text-sm">₱700</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Chest Farming -->
+            <section>
+                <h2 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">Chest Farming</h2>
+                <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 divide-y divide-slate-50">
+                    <div class="p-4 flex justify-between items-center">
+                        <span class="font-bold text-slate-700 text-sm">Light (30 chests)</span>
+                        <span class="font-black text-blue-600 text-sm">₱120</span>
+                    </div>
+                    <div class="p-4 flex justify-between items-center">
+                        <span class="font-bold text-slate-700 text-sm">Full chest run</span>
+                        <span class="font-black text-blue-600 text-sm">₱120</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Oculi -->
+            <section>
+                <h2 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">Collecting oculi</h2>
+                <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 divide-y divide-slate-50">
+                    <div class="p-4 flex justify-between items-center">
+                        <span class="font-bold text-slate-700 text-sm">1 Region</span>
+                        <span class="font-black text-blue-600 text-sm">₱170</span>
+                    </div>
+                    <div class="p-4 flex justify-between items-center">
+                        <span class="font-bold text-slate-700 text-sm">Full map</span>
+                        <span class="font-black text-blue-600 text-sm">₱120</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Waypoints -->
+            <section>
+                <h2 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">Waypoints & Statues</h2>
+                <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 divide-y divide-slate-50">
+                    <div class="p-4 flex justify-between items-center">
+                        <span class="font-bold text-slate-700 text-sm">Small Area</span>
+                        <span class="font-black text-blue-600 text-sm">₱70</span>
+                    </div>
+                    <div class="p-4 flex justify-between items-center">
+                        <span class="font-bold text-slate-700 text-sm">Full Region</span>
+                        <span class="font-black text-blue-600 text-sm">₱70</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+</body>
+</html>
