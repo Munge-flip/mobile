@@ -1,1 +1,0 @@
-import{_ as a,c as e,b as n,U as s,o as t}from"./app-CuwuI9hM.js";const c={class:"content-section"},o={__name:"AdminTransactionsIndexView",setup(i){return(r,_)=>(t(),e("div",c,[n(s,{"api-url":"/api/v1/admin/transactions"})]))}},p=a(o,[["__scopeId","data-v-45e7ac7f"]]);export{p as default};

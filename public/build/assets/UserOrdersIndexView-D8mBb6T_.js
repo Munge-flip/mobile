@@ -1,1 +1,0 @@
-import{_ as r,c as s,a as t,b as o,O as a,o as d}from"./app-CuwuI9hM.js";const n={class:"content-section"},c={__name:"UserOrdersIndexView",setup(i){return(_,e)=>(d(),s("div",n,[e[0]||(e[0]=t("h1",null,"Order History",-1)),o(a,{"api-url":"/api/v1/user/orders","view-base-url":"/user/order"})]))}},l=r(c,[["__scopeId","data-v-10b2453a"]]);export{l as default};

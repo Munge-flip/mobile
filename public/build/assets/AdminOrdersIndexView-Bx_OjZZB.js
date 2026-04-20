@@ -1,1 +1,0 @@
-import{_ as e,c as s,b as r,J as a,o as t}from"./app-CuwuI9hM.js";const c={class:"content-section"},n={__name:"AdminOrdersIndexView",setup(o){return(d,_)=>(t(),s("div",c,[r(a,{"api-url":"/api/v1/admin/orders"})]))}},p=e(n,[["__scopeId","data-v-737fbcb7"]]);export{p as default};

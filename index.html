@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoyo Piloting - Mobile Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Syne', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-[#1e3c72] bg-gradient-to-br from-[#1e3c72] via-[#2a5298] to-[#7e22ce] min-h-screen text-white pb-20">
+
+    <!-- Header -->
+    <header class="p-4 flex justify-between items-center sticky top-0 z-50 bg-[#1e1e1e]/90 backdrop-blur-md border-b border-white/10">
+        <div class="flex items-center gap-2">
+            <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-purple-400">
+                <img src="../public/img/weblogo.png" alt="Logo" class="w-full h-full object-cover">
+            </div>
+            <span class="font-bold text-lg tracking-tight">Hoyo Piloting</span>
+        </div>
+        <button class="p-2 bg-white/10 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+        </button>
+    </header>
+
+    <!-- Hero / Welcome -->
+    <section class="p-6">
+        <h1 class="text-3xl font-bold mb-2">Welcome back!</h1>
+        <p class="text-white/70">Select a game to start your piloting service.</p>
+    </section>
+
+    <!-- Game Selection List -->
+    <main class="px-4 space-y-4">
+        <!-- Genshin Impact -->
+        <a href="#" class="block relative group overflow-hidden rounded-2xl aspect-[16/9] shadow-2xl">
+            <img src="../public/img/genshin.png" alt="Genshin" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-active:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-4">
+                <span class="text-xs font-bold uppercase tracking-widest text-blue-400 mb-1">Open World RPG</span>
+                <h2 class="text-2xl font-black">Genshin Impact</h2>
+            </div>
+        </a>
+
+        <!-- Honkai Star Rail -->
+        <a href="#" class="block relative group overflow-hidden rounded-2xl aspect-[16/9] shadow-2xl">
+            <img src="../public/img/hsr.png" alt="HSR" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-active:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-4">
+                <span class="text-xs font-bold uppercase tracking-widest text-purple-400 mb-1">Turn-Based Strategy</span>
+                <h2 class="text-2xl font-black">Honkai Star Rail</h2>
+            </div>
+        </a>
+
+        <!-- Zenless Zone Zero -->
+        <a href="#" class="block relative group overflow-hidden rounded-2xl aspect-[16/9] shadow-2xl">
+            <img src="../public/img/zzz.png" alt="ZZZ" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-active:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-4">
+                <span class="text-xs font-bold uppercase tracking-widest text-yellow-400 mb-1">Action RPG</span>
+                <h2 class="text-2xl font-black">Zenless Zone Zero</h2>
+            </div>
+        </a>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-[#1e1e1e]/95 backdrop-blur-lg border-t border-white/10 px-6 py-3 flex justify-between items-center z-50">
+        <a href="index.html" class="flex flex-col items-center gap-1 text-purple-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            <span class="text-[10px] font-bold">Home</span>
+        </a>
+        <a href="#" class="flex flex-col items-center gap-1 text-white/50">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h12l1 12H4L5 9z" />
+            </svg>
+            <span class="text-[10px] font-bold">Orders</span>
+        </a>
+        <a href="login.html" class="flex flex-col items-center gap-1 text-white/50">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+            <span class="text-[10px] font-bold">Profile</span>
+        </a>
+    </nav>
+
+</body>
+</html>

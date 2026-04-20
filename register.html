@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoyo Piloting - Mobile Register</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Syne', sans-serif; }</style>
+</head>
+<body class="bg-[#14171D] min-h-screen text-white flex flex-col p-6">
+
+    <div class="mt-8 mb-8">
+        <h1 class="text-3xl font-black text-[#A38141] tracking-tight uppercase">Get Started</h1>
+        <p class="text-white/50 mt-1">Start your journey with us.</p>
+    </div>
+
+    <form class="space-y-4">
+        <div class="space-y-1">
+            <label class="text-xs font-bold text-[#A38141] uppercase tracking-widest ml-4">Full Name</label>
+            <input type="text" placeholder="John Doe" class="w-full bg-white/5 border border-white/10 rounded-full px-6 py-4 outline-none focus:border-[#A38141] transition-all">
+        </div>
+
+        <div class="space-y-1">
+            <label class="text-xs font-bold text-[#A38141] uppercase tracking-widest ml-4">Email Address</label>
+            <input type="email" placeholder="john@example.com" class="w-full bg-white/5 border border-white/10 rounded-full px-6 py-4 outline-none focus:border-[#A38141] transition-all">
+        </div>
+
+        <div class="space-y-1">
+            <label class="text-xs font-bold text-[#A38141] uppercase tracking-widest ml-4">Phone Number</label>
+            <input type="tel" placeholder="+63 900 000 0000" class="w-full bg-white/5 border border-white/10 rounded-full px-6 py-4 outline-none focus:border-[#A38141] transition-all">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+            <div class="space-y-1">
+                <label class="text-xs font-bold text-[#A38141] uppercase tracking-widest ml-4">Password</label>
+                <input type="password" placeholder="••••" class="w-full bg-white/5 border border-white/10 rounded-full px-6 py-4 outline-none focus:border-[#A38141] transition-all">
+            </div>
+            <div class="space-y-1">
+                <label class="text-xs font-bold text-[#A38141] uppercase tracking-widest ml-4">Confirm</label>
+                <input type="password" placeholder="••••" class="w-full bg-white/5 border border-white/10 rounded-full px-6 py-4 outline-none focus:border-[#A38141] transition-all">
+            </div>
+        </div>
+
+        <button type="button" class="w-full bg-[#A38141] hover:bg-[#c29c54] text-white font-bold py-4 rounded-full shadow-xl shadow-[#A38141]/20 transition-all active:scale-95 mt-6">
+            SIGN UP
+        </button>
+    </form>
+
+    <div class="mt-8 text-center">
+        <p class="text-white/40 text-sm">
+            Already have an account? 
+            <a href="login.html" class="text-[#A38141] font-bold hover:underline ml-1">Sign In</a>
+        </p>
+    </div>
+
+</body>
+</html>
