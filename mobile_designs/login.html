@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=390, initial-scale=1.0">
+    <title>Hoyo Piloting - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --auth-panel-bg: #A38141;
+            --auth-form-bg: #14171D;
+            --auth-text-gold: #A38141;
+        }
+        body {
+            font-family: 'Syne', sans-serif;
+            margin: 0;
+            background-color: #1E222A;
+            min-height: 844px;
+            width: 390px;
+        }
+        .promo-panel {
+            background-color: var(--auth-panel-bg);
+            padding: 40px 30px;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .form-panel {
+            background-color: var(--auth-form-bg);
+            padding: 40px 30px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 50px;
+            background-color: white;
+            font-size: 15px;
+            font-family: 'Syne', sans-serif;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .form-group input:focus {
+            box-shadow: 0 0 0 3px rgba(163, 129, 65, 0.5);
+        }
+        .submit-btn {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #14171D;
+            padding: 14px 40px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .submit-btn:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body class="flex flex-col">
+    <!-- Promotional Top Panel -->
+    <div class="promo-panel flex flex-col items-center text-center gap-4">
+        <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-white/50 mb-2">
+            <img src="../public/img/weblogo.png" alt="Logo" class="w-full h-full object-cover">
+        </div>
+        <h2 class="text-2xl font-bold text-white tracking-wider uppercase">NEED AN ACCOUNT?</h2>
+        <p class="text-white/80 text-sm leading-relaxed">Sign up an account and enjoy the services with Hoyo Piloting service</p>
+        <button class="bg-white/20 text-white border border-white/30 px-8 py-2.5 rounded-full font-bold text-sm mt-2 backdrop-blur-sm">Create Account</button>
+    </div>
+
+    <!-- Login Form Panel -->
+    <div class="form-panel flex-1 flex flex-col justify-center gap-8">
+        <div class="text-center">
+            <h2 class="text-3xl font-bold text-[#A38141] tracking-widest uppercase">SIGN IN</h2>
+        </div>
+
+        <form class="flex flex-col gap-5">
+            <div class="form-group">
+                <input type="email" placeholder="Email Address" required>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" placeholder="Password" required>
+            </div>
+
+            <div class="flex justify-between items-center px-2 mt-2">
+                <a href="#" class="text-[#A38141] text-xs font-semibold hover:underline">Forgot Password?</a>
+                <button type="submit" class="submit-btn">Sign In</button>
+            </div>
+        </form>
+
+        <div class="mt-8 pt-8 border-t border-white/10 text-center">
+            <p class="text-gray-500 text-xs uppercase tracking-widest mb-4">Or sign in with</p>
+            <div class="flex justify-center gap-4">
+                <button class="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-md">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M21.35 11.1h-9.17v2.73h5.14c-.22 1.1-1.28 3.21-5.14 3.21-3.32 0-6.02-2.75-6.02-6.12s2.7-6.12 6.02-6.12c1.89 0 3.16.8 3.88 1.49l2.16-2.1c-1.39-1.3-3.19-2.09-6.04-2.09-5 0-9.06 4.06-9.06 9.06s4.06 9.06 9.06 9.06c4.91 0 8.27-3.44 8.27-8.4 0-.58-.06-1.02-.13-1.41z"/></svg>
+                </button>
+                <button class="w-12 h-12 rounded-full bg-[#1877F2] text-white flex items-center justify-center shadow-md">
+                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=390, initial-scale=1.0">
+    <title>Hoyo Piloting - Genshin Services</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+            --accent-purple: #a78bfa;
+            --btn-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        body {
+            font-family: 'Syne', sans-serif;
+            margin: 0;
+            background-color: #f9faff;
+            min-height: 844px;
+            width: 390px;
+        }
+        .service-btn {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            transition: all 0.2s ease;
+        }
+        .service-btn.selected {
+            border-color: var(--accent-purple);
+            background-color: rgba(167, 139, 250, 0.05);
+            ring: 2px ring var(--accent-purple);
+        }
+        .exploration-card {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: relative;
+            aspect-ratio: 16/9;
+        }
+        .exploration-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .exploration-card .label {
+            position: absolute;
+            inset: 0;
+            background: rgba(167, 139, 250, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .sticky-footer {
+            background: white;
+            border-top: 1px solid #eee;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body class="flex flex-col">
+    <!-- Header -->
+    <header class="bg-white px-4 h-[70px] flex items-center gap-4 border-b sticky top-0 z-50">
+        <button class="p-2 -ml-2">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <div class="flex-1">
+            <h1 class="font-bold text-lg leading-tight">Genshin Impact</h1>
+            <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Service Selection</p>
+        </div>
+        <div class="w-8 h-8 rounded-full bg-accent-purple/10 flex items-center justify-center text-accent-purple">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 21l-12-18h24z"/></svg>
+        </div>
+    </header>
+
+    <div class="flex-1 overflow-y-auto pb-[140px]">
+        <!-- Banner -->
+        <div class="w-full h-40 overflow-hidden shadow-lg">
+            <img src="../public/img/genshin banner.png" alt="Genshin Banner" class="w-full h-full object-cover">
+        </div>
+
+        <div class="p-6 flex flex-col gap-8">
+            <!-- Maintenance Section -->
+            <section>
+                <h2 class="text-sm font-bold text-gray-400 uppercase tracking-[2px] mb-4">Maintenance</h2>
+                <div class="flex flex-col gap-3">
+                    <button class="service-btn selected">
+                        <span class="font-bold text-gray-800">Daily Commissions</span>
+                        <span class="text-accent-purple font-bold">₱50</span>
+                    </button>
+                    <button class="service-btn">
+                        <span class="font-bold text-gray-800">Weekly Bosses</span>
+                        <span class="text-gray-400 font-bold">₱150</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Exploration Grid -->
+            <section>
+                <h2 class="text-sm font-bold text-gray-400 uppercase tracking-[2px] mb-4">Explorations</h2>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="exploration-card">
+                        <img src="../public/img/mondstadt banner.png">
+                        <div class="label">Mondstadt</div>
+                    </div>
+                    <div class="exploration-card opacity-50 grayscale">
+                        <img src="../public/img/liyue banner.png">
+                        <div class="label bg-black/20">Liyue</div>
+                    </div>
+                    <div class="exploration-card opacity-50 grayscale">
+                        <img src="../public/img/inazuma banner.png">
+                        <div class="label bg-black/20">Inazuma</div>
+                    </div>
+                    <div class="exploration-card opacity-50 grayscale">
+                        <img src="../public/img/fontaine banner.png">
+                        <div class="label bg-black/20">Fontaine</div>
+                    </div>
+                    <div class="exploration-card opacity-50 grayscale">
+                        <img src="../public/img/natlan banner.png">
+                        <div class="label bg-black/20">Natlan</div>
+                    </div>
+                    <div class="exploration-card opacity-50 grayscale">
+                        <img src="../public/img/nod-krai banner.png">
+                        <div class="label bg-black/20">Nod-Krai</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Collecting Section -->
+            <section>
+                <h2 class="text-sm font-bold text-gray-400 uppercase tracking-[2px] mb-4">Farming</h2>
+                <div class="flex flex-col gap-3">
+                    <button class="service-btn">
+                        <span class="font-bold text-gray-800">Collecting Oculi</span>
+                        <span class="text-gray-400 font-bold">₱250</span>
+                    </button>
+                    <button class="service-btn">
+                        <span class="font-bold text-gray-800">100% Area Completion</span>
+                        <span class="text-gray-400 font-bold">₱500</span>
+                    </button>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Sticky Footer -->
+    <div class="sticky-footer fixed bottom-0 w-[390px] p-6 space-y-4">
+        <div class="flex justify-between items-center px-2">
+            <span class="font-bold text-gray-400">Total Price</span>
+            <span class="text-2xl font-bold text-accent-purple">₱50.00</span>
+        </div>
+        <button class="w-full h-[60px] rounded-2xl bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white font-bold text-lg shadow-xl shadow-purple-500/20 active:scale-[0.98] transition-all">
+            Get Service
+        </button>
+    </div>
+</body>
+</html>

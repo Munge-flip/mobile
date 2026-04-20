@@ -1,0 +1,1 @@
+import{_ as r,c as s,a as t,b as a,O as n,o}from"./app-CuwuI9hM.js";const d={class:"content-section"},c={__name:"AgentOrdersIndexView",setup(i){return(_,e)=>(o(),s("div",d,[e[0]||(e[0]=t("h1",null,"Orders Handling",-1)),a(n,{"api-url":"/api/v1/agent/orders","view-base-url":"/agent/order","is-agent":!0})]))}},p=r(c,[["__scopeId","data-v-bdfa7135"]]);export{p as default};

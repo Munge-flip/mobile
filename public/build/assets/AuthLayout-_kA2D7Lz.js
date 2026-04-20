@@ -1,0 +1,1 @@
+import{c as t,b as o,r as a,o as r}from"./app-CuwuI9hM.js";const s={id:"auth-layout",class:"auth-page-wrapper"},u={__name:"AuthLayout",setup(c){return(n,_)=>{const e=a("router-view");return r(),t("div",s,[o(e)])}}};export{u as default};

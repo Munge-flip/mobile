@@ -1,0 +1,543 @@
+/* ============================================
+   SERVICES.CSS - Game Service Pages
+   Used by: genshin.html, hsr.html, zzz.html
+   ============================================ */
+
+/* ========== MAIN CONTAINER ========== */
+.services-container {
+  display: flex;
+  max-width: 1400px;
+  margin: 20px auto;
+  gap: 20px;
+  padding: 0 20px 20px;
+}
+
+/* ========== SIDEBAR ========== */
+.sidebar {
+  width: 280px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  padding: 25px;
+  height: fit-content;
+  position: sticky;
+  top: calc(10vh + 20px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.game-info {
+  text-align: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.game-icon {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border: 3px solid #a78bfa;
+}
+
+.game-info h2 {
+  font-size: 20px;
+  color: #333;
+}
+
+.how-to-order h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.how-to-order ol {
+  padding-left: 20px;
+}
+
+.how-to-order li {
+  margin-bottom: 12px;
+  line-height: 1.5;
+  color: #555;
+  font-size: 14px;
+}
+
+/* ========== MAIN CONTENT ========== */
+.content {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* ========== BANNER ========== */
+.banner {
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  margin-bottom: 30px;
+  border-radius: 15px 15px 0 0;
+}
+
+.banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ========== SERVICE SECTIONS ========== */
+.service-section h2 {
+  font-size: 28px;
+  margin-bottom: 25px;
+  color: #333;
+  border-bottom: 3px solid #a78bfa;
+  padding-bottom: 10px;
+}
+
+.service-category {
+  margin-bottom: 35px;
+}
+
+.service-category h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #555;
+}
+
+.event-note {
+  display: flex;
+  font-size: 13px;
+  color: #888;
+  font-style: italic;
+  margin-bottom: 15px;
+  justify-content: space-between;
+  list-style: none;
+  padding: 0 150px;
+}
+
+.service-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.service-btn {
+  flex: 1;
+  min-width: 200px;
+  padding: 15px 20px;
+  background: #f5f5f5;
+  border: 2px solid #e0e0e0;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+}
+
+.mode-card {
+    flex: 1;
+    min-width: 180px;
+    padding: 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid #e0e0e0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.mode-selection {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.service-btn:hover {
+  background: #fff;
+  border-color: #a78bfa;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(167, 139, 250, 0.3);
+}
+
+.service-btn.selected {
+  background: #a78bfa;
+  border-color: #a78bfa;
+  color: white;
+  font-weight: 600;
+}
+
+.service-btn .price {
+  font-weight: 700;
+  color: #333;
+}
+
+.service-btn.selected .price {
+  color: white;
+}
+
+/* ========== WORLD SELECTION (HSR) ========== */
+.world-selection {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  flex-basis: 100%;
+}
+
+.world-card {
+  flex: 1;
+  min-width: 180px;
+  padding: 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid #e0e0e0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  background: #f5f5f5;
+}
+
+.world-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.world-card.selected {
+  background: #a78bfa;
+  border-color: #a78bfa;
+  color: white;
+  font-weight: 600;
+}
+
+.world-label {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* ========== EXPLORATION GRID ========== */
+.exploration-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.exploration-card {
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 3px solid transparent;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.exploration-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.exploration-card.selected {
+  border-color: #a78bfa;
+  box-shadow: 0 8px 20px rgba(167, 139, 250, 0.4);
+}
+
+.exploration-image {
+  height: 150px;
+  background-size: cover;
+  background-position: center;
+}
+
+.exploration-card h4 {
+  padding: 15px;
+  text-align: center;
+  background: white;
+  font-size: 16px;
+  color: #333;
+}
+
+.exploration-card.selected h4 {
+  background: #a78bfa;
+  color: white;
+  font-weight: 600;
+}
+
+/* ========== GENSHIN REGION BACKGROUNDS ========== */
+.mondstadt-bg {
+  background-image: url(/img/mondstadt\ banner.png);
+}
+
+.liyue-bg {
+  background-image: url(/img/liyue\ banner.jpg);
+}
+
+.inazuma-bg {
+  background-image: url(/img/inazuma\ banner.png);
+}
+
+.fontaine-bg {
+  background-image: url(/img/fontaine\ banner.png);
+}
+
+.natlan-bg {
+  background-image: url(/img/natlan\ banner.png);
+}
+
+.nod-krai-bg {
+  background-image: url(/img/nodkrai\ banner.png);
+}
+
+/* ========== HSR REGION BACKGROUNDS ========== */
+.herta-bg {
+  background-image: url(/img/Herta-Space-Station\ banner.png);
+}
+
+.jarilo-bg {
+  background-image: url(/img/jarilo\ banner.png);
+}
+
+.xianzhou-bg {
+  background-image: url(/img/xianzhou\ banner.png);
+}
+
+.penacony-bg {
+  background-image: url(/img/penacony\ banner.png);
+}
+
+.amphoreus-bg {
+  background-image: url(/img/amphoreus\ banner.png);
+}
+
+/* ========== PAYMENT SECTION ========== */
+.payment-section {
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 2px solid #e0e0e0;
+}
+
+.payment-section h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.payment-type {
+  margin-bottom: 25px;
+}
+
+.payment-type h3 {
+  background: #ffa500;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px 8px 0 0;
+  font-size: 18px;
+  margin-bottom: 0;
+}
+
+.payment-options {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  background: #f5f5f5;
+  border-radius: 0 0 8px 8px;
+}
+
+.payment-option {
+  flex: 1;
+}
+
+.payment-option label {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.payment-option strong {
+  color: #333;
+  font-size: 16px;
+}
+
+.payment-input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.payment-input:focus {
+  border-color: #a78bfa;
+}
+
+/* ========== ORDER SUMMARY ========== */
+.order-summary {
+  margin: 30px 0;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  border-left: 4px solid #a78bfa;
+}
+
+.order-summary h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+#selectedServices {
+  margin-bottom: 15px;
+}
+
+.selected-item {
+  padding: 8px 0;
+  color: #555;
+  font-size: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.total-price {
+  font-size: 22px;
+  color: #333;
+  padding-top: 15px;
+  border-top: 2px solid #ddd;
+  text-align: right;
+  font-weight: 700;
+}
+
+/* ========== ORDER CONFIRMATION ========== */
+.order-confirmation {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.order-confirmation h2 {
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.order-confirmation p {
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.order-confirmation a {
+  color: #a78bfa;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.order-confirmation a:hover {
+  text-decoration: underline;
+}
+
+/* ========== SUBMIT BUTTON ========== */
+.submit-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 15px 50px;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Syne', sans-serif;
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.submit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+@media (max-width: 1024px) {
+  .services-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    position: relative;
+    top: 0;
+  }
+
+  .exploration-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+
+  .event-note {
+    padding: 0 50px;
+  }
+}
+
+@media (max-width: 768px) {
+  .service-options {
+    flex-direction: column;
+  }
+
+  .service-btn {
+    min-width: 100%;
+  }
+
+  .payment-options {
+    flex-direction: column;
+  }
+
+  .event-note {
+    flex-direction: column;
+    padding: 0;
+    gap: 5px;
+  }
+
+  .world-selection {
+    flex-direction: column;
+  }
+
+  .world-card {
+    min-width: 100%;
+  }
+}
+/* Add this to your CSS file */
+.mode-card {
+    padding: 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.mode-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.mode-card.selected {
+  background: #a78bfa;
+  border-color: #a78bfa;
+  color: white;
+  font-weight: 600;
+}
+
+.mode-label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+
+.mode-selection {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    flex-basis: 100%;
+}
