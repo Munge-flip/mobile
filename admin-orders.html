@@ -11,20 +11,23 @@
 <body class="bg-[#f1f5f9] min-h-screen pb-24">
 
     <!-- Header -->
-    <header class="p-4 flex items-center gap-4 sticky top-0 z-50 bg-[#1e1e1e]/90 backdrop-blur-md border-b border-white/10 text-white">
-        <a href="admin-dashboard.html" class="p-2 bg-white/10 rounded-xl">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-        </a>
-        <h1 class="text-lg font-bold tracking-tight">Order Queue</h1>
+    <header class="p-4 flex items-center gap-4 sticky top-0 z-50 bg-[#1e1e1e]/90 backdrop-blur-md border-b border-white/10 text-white shadow-sm">
+        <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center">
+            <a href="admin-dashboard.html" class="p-2 bg-white/10 rounded-xl">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </a>
+        </div>
+        <h1 class="text-lg font-bold tracking-tight truncate">Order Queue</h1>
+        <div class="ml-auto flex items-center gap-2"></div>
     </header>
 
     <main class="p-4 space-y-4">
         
         <!-- Filter Tabs -->
         <div class="flex gap-2 overflow-x-auto pb-2 hide-scrollbar">
-            <button class="px-6 py-2 bg-blue-600 text-white text-xs font-bold rounded-full whitespace-nowrap shadow-lg shadow-blue-100">Pending</button>
+            <button class="px-6 py-2 bg-blue-600 text-white text-xs font-bold rounded-full whitespace-nowrap shadow-sm">Pending</button>
             <button class="px-6 py-2 bg-white text-slate-500 text-xs font-bold rounded-full border border-slate-100 whitespace-nowrap">Assigned</button>
             <button class="px-6 py-2 bg-white text-slate-500 text-xs font-bold rounded-full border border-slate-100 whitespace-nowrap">Completed</button>
         </div>
