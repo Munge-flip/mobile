@@ -133,6 +133,7 @@ export default function ZZZServicesScreen() {
           {/* Payment Methods */}
           <View style={styles.paymentSection}>
             <Text style={styles.paymentHeader}>Payment Method</Text>
+            
             <View style={styles.paymentGroup}>
                <Text style={[styles.paymentGroupLabel, { backgroundColor: '#EAB308' }]}>QR Payment</Text>
                <View style={styles.paymentGrid}>
@@ -143,6 +144,20 @@ export default function ZZZServicesScreen() {
                   <TouchableOpacity style={styles.paymentItem}>
                     <Text style={styles.paymentItemText}>PayPal</Text>
                     <Text style={styles.paymentItemSub}>Scan QR</Text>
+                  </TouchableOpacity>
+               </View>
+            </View>
+
+            <View style={styles.paymentGroup}>
+               <Text style={[styles.paymentGroupLabel, { backgroundColor: '#6366F1' }]}>E-Wallet</Text>
+               <View style={[styles.paymentGrid, { borderColor: '#EEF2FF' }]}>
+                  <TouchableOpacity style={styles.paymentItem}>
+                    <Text style={styles.paymentItemText}>GCash</Text>
+                    <Text style={styles.paymentItemSub}>Direct</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.paymentItem}>
+                    <Text style={styles.paymentItemText}>PayPal</Text>
+                    <Text style={styles.paymentItemSub}>Direct</Text>
                   </TouchableOpacity>
                </View>
             </View>

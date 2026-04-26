@@ -52,6 +52,10 @@ const SERVICES = {
     { id: 'ex4', name: 'Penacony' },
     { id: 'ex5', name: 'Amphoreus' },
   ],
+  completion: [
+    { id: 'ac1', name: 'Small area', price: 170 },
+    { id: 'ac2', name: 'Whole Map', price: 500 },
+  ],
 };
 
 const WORLDS = ['Swarm Disaster', 'Gold & Gears', 'Unknowable Domain'];
@@ -170,15 +174,19 @@ export default function HSRServicesScreen() {
                     require('../assets/images/icon.png')
                   }
                   style={styles.regionImg}
+                  resizeMode="cover"
                 />
                 <Text style={styles.regionName}>{ex.name}</Text>
               </TouchableOpacity>
             ))}
           </View>
 
+          <Section title="100% Area Completion" items={SERVICES.completion} selected={selectedServices} onToggle={toggleService} />
+
           {/* Payment Method Group */}
           <View style={styles.paymentSection}>
             <Text style={styles.paymentHeader}>Payment Method</Text>
+            
             <View style={styles.paymentGroup}>
                <Text style={styles.paymentGroupLabel}>QR Payment</Text>
                <View style={styles.paymentGrid}>
@@ -189,6 +197,20 @@ export default function HSRServicesScreen() {
                   <TouchableOpacity style={styles.paymentItem}>
                     <Text style={styles.paymentItemText}>PayPal</Text>
                     <Text style={styles.paymentItemSub}>Scan QR</Text>
+                  </TouchableOpacity>
+               </View>
+            </View>
+
+            <View style={styles.paymentGroup}>
+               <Text style={[styles.paymentGroupLabel, { backgroundColor: '#6366F1' }]}>E-Wallet</Text>
+               <View style={[styles.paymentGrid, { borderColor: '#EEF2FF' }]}>
+                  <TouchableOpacity style={styles.paymentItem}>
+                    <Text style={styles.paymentItemText}>GCash</Text>
+                    <Text style={styles.paymentItemSub}>Direct</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.paymentItem}>
+                    <Text style={styles.paymentItemText}>PayPal</Text>
+                    <Text style={styles.paymentItemSub}>Direct</Text>
                   </TouchableOpacity>
                </View>
             </View>
