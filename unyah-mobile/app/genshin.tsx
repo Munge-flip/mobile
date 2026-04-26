@@ -76,7 +76,7 @@ export default function GenshinServicesScreen() {
         {/* Banner */}
         <View style={styles.bannerContainer}>
           <Image 
-            source={require('../assets/images/icon.png')} // Placeholder for banner
+            source={require('../assets/images/genshin banner.png')}
             style={styles.bannerImg}
           />
           <View style={styles.bannerOverlay} />
@@ -90,7 +90,7 @@ export default function GenshinServicesScreen() {
           <View style={styles.infoCard}>
             <View style={styles.gameLogoContainer}>
               <Image 
-                source={require('../assets/images/icon.png')} 
+                source={require('../assets/images/paimon logo.png')} 
                 style={styles.gameLogo}
               />
             </View>
@@ -119,7 +119,18 @@ export default function GenshinServicesScreen() {
                 ]}
                 onPress={() => toggleService(ex.id)}
               >
-                <View style={styles.regionPlaceholder} />
+                <Image 
+                  source={
+                    ex.name === 'Mondstadt' ? require('../assets/images/mondstadt banner.png') :
+                    ex.name === 'Liyue' ? require('../assets/images/liyue banner.png') :
+                    ex.name === 'Inazuma' ? require('../assets/images/inazuma banner.png') :
+                    ex.name === 'Fontaine' ? require('../assets/images/fontaine banner.png') :
+                    ex.name === 'Sumeru' ? require('../assets/images/sumeru banner.png') :
+                    ex.name === 'Natlan' ? require('../assets/images/natlan banner.png') :
+                    require('../assets/images/icon.png')
+                  }
+                  style={styles.regionImg}
+                />
                 <Text style={styles.regionName}>{ex.name}</Text>
               </TouchableOpacity>
             ))}

@@ -48,11 +48,19 @@ export default function HomeScreen() {
         <View style={styles.gameList}>
           {/* Genshin Impact */}
           <TouchableOpacity 
-            style={[styles.gameCard, { backgroundColor: '#1E3C72' }]} 
+            style={styles.gameCard} 
             onPress={() => router.push('/genshin')}
             activeOpacity={0.9}
           >
-            <View style={styles.cardOverlay}>
+            <View style={styles.cardImageContainer}>
+              <Image 
+                source={require('../../assets/images/genshin.png')}
+                style={styles.gameImage}
+                resizeMode="cover"
+              />
+              <View style={styles.cardGradient} />
+            </View>
+            <View style={styles.cardContent}>
               <Text style={styles.cardCategory}>Open World RPG</Text>
               <Text style={styles.cardTitle}>Genshin Impact</Text>
             </View>
@@ -60,11 +68,19 @@ export default function HomeScreen() {
 
           {/* Honkai Star Rail */}
           <TouchableOpacity 
-            style={[styles.gameCard, { backgroundColor: '#2D1B69' }]} 
+            style={styles.gameCard} 
             onPress={() => router.push('/hsr')}
             activeOpacity={0.9}
           >
-            <View style={styles.cardOverlay}>
+            <View style={styles.cardImageContainer}>
+              <Image 
+                source={require('../../assets/images/hsr.png')}
+                style={styles.gameImage}
+                resizeMode="cover"
+              />
+              <View style={styles.cardGradient} />
+            </View>
+            <View style={styles.cardContent}>
               <Text style={[styles.cardCategory, { color: '#C084FC' }]}>Turn-Based Strategy</Text>
               <Text style={styles.cardTitle}>Honkai Star Rail</Text>
             </View>
@@ -72,11 +88,19 @@ export default function HomeScreen() {
 
           {/* Zenless Zone Zero */}
           <TouchableOpacity 
-            style={[styles.gameCard, { backgroundColor: '#4C3B11' }]} 
+            style={styles.gameCard} 
             onPress={() => router.push('/zzz')}
             activeOpacity={0.9}
           >
-            <View style={styles.cardOverlay}>
+            <View style={styles.cardImageContainer}>
+              <Image 
+                source={require('../../assets/images/zzz.png')}
+                style={styles.gameImage}
+                resizeMode="cover"
+              />
+              <View style={styles.cardGradient} />
+            </View>
+            <View style={styles.cardContent}>
               <Text style={[styles.cardCategory, { color: '#FACC15' }]}>Action RPG</Text>
               <Text style={styles.cardTitle}>Zenless Zone Zero</Text>
             </View>
@@ -169,17 +193,35 @@ const styles = StyleSheet.create({
     aspectRatio: 16 / 9,
     borderRadius: 20,
     overflow: 'hidden',
+    position: 'relative',
+    backgroundColor: '#1E1E1E',
     elevation: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.3,
     shadowRadius: 15,
   },
-  cardOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    justifyContent: 'flex-end',
-    padding: 20,
+  cardImageContainer: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  gameImage: {
+    width: '100%',
+    height: '100%',
+  },
+  cardGradient: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '40%',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+  },
+  cardContent: {
+    position: 'absolute',
+    bottom: 12,
+    left: 12,
   },
   cardCategory: {
     fontSize: 10,
@@ -187,10 +229,10 @@ const styles = StyleSheet.create({
     color: '#60A5FA',
     textTransform: 'uppercase',
     letterSpacing: 2,
-    marginBottom: 4,
+    marginBottom: 2,
   },
   cardTitle: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: '900',
     color: '#FFFFFF',
   },

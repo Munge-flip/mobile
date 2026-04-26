@@ -74,7 +74,10 @@ export default function ZZZServicesScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         {/* Banner */}
         <View style={styles.bannerContainer}>
-          <View style={[styles.bannerImg, { backgroundColor: '#4C3B11' }]} />
+          <Image 
+            source={require('../assets/images/zzz banner.png')}
+            style={styles.bannerImg}
+          />
           <View style={styles.bannerOverlay} />
           <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
             <IconSymbol name="chevron.left" size={24} color="#FFF" />
@@ -86,7 +89,7 @@ export default function ZZZServicesScreen() {
           <View style={styles.infoCard}>
             <View style={styles.gameLogoContainer}>
               <Image 
-                source={require('../assets/images/icon.png')} 
+                source={require('../assets/images/zzz icon.png')} 
                 style={styles.gameLogo}
               />
             </View>

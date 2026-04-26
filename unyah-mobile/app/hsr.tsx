@@ -85,7 +85,10 @@ export default function HSRServicesScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         {/* Banner */}
         <View style={styles.bannerContainer}>
-          <View style={[styles.bannerImg, { backgroundColor: '#2D1B69' }]} />
+          <Image 
+            source={require('../assets/images/hsr banner.png')}
+            style={styles.bannerImg}
+          />
           <View style={styles.bannerOverlay} />
           <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
             <IconSymbol name="chevron.left" size={24} color="#FFF" />
@@ -97,7 +100,7 @@ export default function HSRServicesScreen() {
           <View style={styles.infoCard}>
             <View style={styles.gameLogoContainer}>
               <Image 
-                source={require('../assets/images/icon.png')} 
+                source={require('../assets/images/hsr icon.png')} 
                 style={styles.gameLogo}
               />
             </View>
@@ -157,7 +160,17 @@ export default function HSRServicesScreen() {
                 ]}
                 onPress={() => toggleService(ex.id)}
               >
-                <View style={styles.regionPlaceholder} />
+                <Image 
+                  source={
+                    ex.name === 'Herta Space Station' ? require('../assets/images/Herta-Space-Station banner.png') :
+                    ex.name === 'Jarilo-VI' ? require('../assets/images/jarilo banner.png') :
+                    ex.name === 'Xianzhou Luofu' ? require('../assets/images/xianzhou banner.png') :
+                    ex.name === 'Penacony' ? require('../assets/images/penacony banner.png') :
+                    ex.name === 'Amphoreus' ? require('../assets/images/amphoreus banner.png') :
+                    require('../assets/images/icon.png')
+                  }
+                  style={styles.regionImg}
+                />
                 <Text style={styles.regionName}>{ex.name}</Text>
               </TouchableOpacity>
             ))}
