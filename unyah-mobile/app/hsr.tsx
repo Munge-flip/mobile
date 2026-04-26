@@ -150,7 +150,7 @@ export default function HSRServicesScreen() {
           <Section title="Divergent Universe" items={SERVICES.divergentUniverse} selected={selectedServices} onToggle={toggleService} />
 
           <Text style={styles.sectionTitle}>Explorations</Text>
-          <div style={styles.regionGrid as any}>
+          <View style={styles.regionGrid}>
             {SERVICES.explorations.map(ex => (
               <TouchableOpacity 
                 key={ex.id}
@@ -174,7 +174,7 @@ export default function HSRServicesScreen() {
                 <Text style={styles.regionName}>{ex.name}</Text>
               </TouchableOpacity>
             ))}
-          </div>
+          </View>
 
           {/* Payment Method Group */}
           <View style={styles.paymentSection}>

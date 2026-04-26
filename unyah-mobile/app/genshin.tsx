@@ -44,6 +44,23 @@ const SERVICES = {
     { id: 'ex4', name: 'Fontaine' },
     { id: 'ex5', name: 'Sumeru' },
     { id: 'ex6', name: 'Natlan' },
+    { id: 'ex7', name: 'Nod Krai' },
+  ],
+  chestFarming: [
+    { id: 'cf1', name: 'Light farming 30 chests', price: 120 },
+    { id: 'cf2', name: 'Full chest run', price: 120 },
+  ],
+  oculi: [
+    { id: 'oc1', name: '1 Region', price: 170 },
+    { id: 'oc2', name: 'Full map', price: 120 },
+  ],
+  waypoints: [
+    { id: 'wp1', name: 'Small Area', price: 70 },
+    { id: 'wp2', name: 'Full Region', price: 70 },
+  ],
+  completion: [
+    { id: 'ac1', name: 'Small area', price: 170 },
+    { id: 'ac2', name: 'Whole region', price: 120 },
   ],
 };
 
@@ -127,6 +144,7 @@ export default function GenshinServicesScreen() {
                     ex.name === 'Fontaine' ? require('../assets/images/fontaine banner.png') :
                     ex.name === 'Sumeru' ? require('../assets/images/sumeru banner.png') :
                     ex.name === 'Natlan' ? require('../assets/images/natlan banner.png') :
+                    ex.name === 'Nod Krai' ? require('../assets/images/nod-krai banner.png') :
                     require('../assets/images/icon.png')
                   }
                   style={styles.regionImg}
@@ -136,9 +154,15 @@ export default function GenshinServicesScreen() {
             ))}
           </View>
 
-          {/* Payment Methods Placeholder */}
+          <Section title="Chest Farming" items={SERVICES.chestFarming} selected={selectedServices} onToggle={toggleService} />
+          <Section title="Collecting oculi" items={SERVICES.oculi} selected={selectedServices} onToggle={toggleService} />
+          <Section title="Unlocking Waypoints & Statues" items={SERVICES.waypoints} selected={selectedServices} onToggle={toggleService} />
+          <Section title="100% Area Completion" items={SERVICES.completion} selected={selectedServices} onToggle={toggleService} />
+
+          {/* Payment Methods */}
           <View style={styles.paymentSection}>
             <Text style={styles.paymentHeader}>Payment Method</Text>
+            
             <View style={styles.paymentGroup}>
                <Text style={styles.paymentGroupLabel}>QR Payment</Text>
                <View style={styles.paymentGrid}>
@@ -149,6 +173,20 @@ export default function GenshinServicesScreen() {
                   <TouchableOpacity style={styles.paymentItem}>
                     <Text style={styles.paymentItemText}>PayPal</Text>
                     <Text style={styles.paymentItemSub}>Scan QR</Text>
+                  </TouchableOpacity>
+               </View>
+            </View>
+
+            <View style={styles.paymentGroup}>
+               <Text style={[styles.paymentGroupLabel, { backgroundColor: '#6366F1' }]}>E-Wallet</Text>
+               <View style={[styles.paymentGrid, { borderColor: '#EEF2FF' }]}>
+                  <TouchableOpacity style={styles.paymentItem}>
+                    <Text style={styles.paymentItemText}>GCash</Text>
+                    <Text style={styles.paymentItemSub}>Direct</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.paymentItem}>
+                    <Text style={styles.paymentItemText}>PayPal</Text>
+                    <Text style={styles.paymentItemSub}>Direct</Text>
                   </TouchableOpacity>
                </View>
             </View>
@@ -313,6 +351,7 @@ const styles = StyleSheet.create({
   regionGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'space-between',
     gap: 12,
     marginBottom: 40,
   },
@@ -335,6 +374,10 @@ const styles = StyleSheet.create({
   regionPlaceholder: {
     height: 80,
     backgroundColor: '#E2E8F0',
+  },
+  regionImg: {
+    height: 80,
+    width: '100%',
   },
   regionName: {
     padding: 12,
