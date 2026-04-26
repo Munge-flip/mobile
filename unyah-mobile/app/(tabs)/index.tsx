@@ -30,11 +30,6 @@ export default function HomeScreen() {
           </View>
           <Text style={styles.headerTitle}>Hoyo Piloting</Text>
         </View>
-        <TouchableOpacity style={styles.menuBtn}>
-          <View style={styles.menuLine} />
-          <View style={[styles.menuLine, { width: 16 }]} />
-          <View style={styles.menuLine} />
-        </TouchableOpacity>
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
