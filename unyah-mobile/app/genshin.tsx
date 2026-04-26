@@ -8,12 +8,16 @@ import {
   Image,
   SafeAreaView,
   StatusBar,
-  Dimensions,
+  // Dimensions,
+  // useWindowDimensions,
 } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import { useWindowDimensions } from 'react-native';
 
-const { width } = Dimensions.get('window');
+// const { width } = Dimensions.get('window');
+// const { width } = useWindowDimensions();
+
 
 const SERVICES = {
   maintenance: [
@@ -65,6 +69,7 @@ const SERVICES = {
 };
 
 export default function GenshinServicesScreen() {
+  const { width } = useWindowDimensions();
   const router = useRouter();
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
 
@@ -132,23 +137,27 @@ export default function GenshinServicesScreen() {
                 key={ex.id}
                 style={[
                   styles.regionCard,
+                  { width: (width - 72) / 2 },
                   selectedServices.includes(ex.id) && styles.regionCardActive
                 ]}
                 onPress={() => toggleService(ex.id)}
               >
-                <Image 
-                  source={
-                    ex.name === 'Mondstadt' ? require('../assets/images/mondstadt banner.png') :
-                    ex.name === 'Liyue' ? require('../assets/images/liyue banner.png') :
-                    ex.name === 'Inazuma' ? require('../assets/images/inazuma banner.png') :
-                    ex.name === 'Fontaine' ? require('../assets/images/fontaine banner.png') :
-                    ex.name === 'Sumeru' ? require('../assets/images/sumeru banner.png') :
-                    ex.name === 'Natlan' ? require('../assets/images/natlan banner.png') :
-                    ex.name === 'Nod Krai' ? require('../assets/images/nod-krai banner.png') :
-                    require('../assets/images/icon.png')
-                  }
-                  style={styles.regionImg}
-                />
+                <View style={styles.regionImgContainer}>
+                  <Image 
+                    source={
+                      ex.name === 'Mondstadt' ? require('../assets/images/mondstadt banner.png') :
+                      ex.name === 'Liyue' ? require('../assets/images/liyue banner.png') :
+                      ex.name === 'Inazuma' ? require('../assets/images/inazuma banner.png') :
+                      ex.name === 'Fontaine' ? require('../assets/images/fontaine banner.png') :
+                      ex.name === 'Sumeru' ? require('../assets/images/sumeru banner.png') :
+                      ex.name === 'Natlan' ? require('../assets/images/natlan banner.png') :
+                      ex.name === 'Nod Krai' ? require('../assets/images/nod-krai banner.png') :
+                      require('../assets/images/icon.png')
+                    }
+                    style={styles.regionImg}
+                    resizeMode="cover"
+                  />
+                </View>
                 <Text style={styles.regionName}>{ex.name}</Text>
               </TouchableOpacity>
             ))}
@@ -356,7 +365,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   regionCard: {
-    width: (width - 60) / 2,
+    // width: (width - 72) / 2,
     backgroundColor: '#FFF',
     borderRadius: 16,
     overflow: 'hidden',

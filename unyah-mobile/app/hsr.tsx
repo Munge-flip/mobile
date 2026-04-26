@@ -164,18 +164,20 @@ export default function HSRServicesScreen() {
                 ]}
                 onPress={() => toggleService(ex.id)}
               >
-                <Image 
-                  source={
-                    ex.name === 'Herta Space Station' ? require('../assets/images/Herta-Space-Station banner.png') :
-                    ex.name === 'Jarilo-VI' ? require('../assets/images/jarilo banner.png') :
-                    ex.name === 'Xianzhou Luofu' ? require('../assets/images/xianzhou banner.png') :
-                    ex.name === 'Penacony' ? require('../assets/images/penacony banner.png') :
-                    ex.name === 'Amphoreus' ? require('../assets/images/amphoreus banner.png') :
-                    require('../assets/images/icon.png')
-                  }
-                  style={styles.regionImg}
-                  resizeMode="cover"
-                />
+                <View style={styles.regionImgContainer}>
+                  <Image 
+                    source={
+                      ex.name === 'Herta Space Station' ? require('../assets/images/Herta-Space-Station banner.png') :
+                      ex.name === 'Jarilo-VI' ? require('../assets/images/jarilo banner.png') :
+                      ex.name === 'Xianzhou Luofu' ? require('../assets/images/xianzhou banner.png') :
+                      ex.name === 'Penacony' ? require('../assets/images/penacony banner.png') :
+                      ex.name === 'Amphoreus' ? require('../assets/images/amphoreus banner.png') :
+                      require('../assets/images/icon.png')
+                    }
+                    style={styles.regionImg}
+                    resizeMode="cover"
+                  />
+                </View>
                 <Text style={styles.regionName}>{ex.name}</Text>
               </TouchableOpacity>
             ))}
@@ -410,19 +412,32 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   regionCard: {
-    width: (width - 60) / 2,
+    width: (width - 48 - 12) / 2,
     backgroundColor: '#FFF',
     borderRadius: 16,
     overflow: 'hidden',
     borderWidth: 2,
     borderColor: 'transparent',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
   },
   regionCardActive: {
     borderColor: '#A78BFA',
   },
-  regionPlaceholder: {
+  regionImgContainer: {
     height: 80,
+    width: '100%',
     backgroundColor: '#E2E8F0',
+    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  regionImg: {
+    width: '100%',
+    height: '100%',
   },
   regionName: {
     padding: 12,
