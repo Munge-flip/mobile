@@ -24,7 +24,7 @@ export default function HomeScreen() {
         <View style={styles.headerLeft}>
           <View style={styles.logoCircle}>
             <Image
-              source={require('../../assets/images/icon.png')}
+              source={require('../../assets/images/weblogo.png')}
               style={styles.logoImg}
             />
           </View>

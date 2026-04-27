@@ -9,8 +9,12 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { Link, Stack, useRouter } from 'expo-router';
+import axios from 'axios';
+import { API_URL } from '@/constants/api';
 
 export default function RegisterScreen() {
   const router = useRouter();
@@ -19,7 +23,43 @@ export default function RegisterScreen() {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
+
+  const handleRegister = async () => {
+    if (!fullName || !email || !password || !confirmPassword) {
+      Alert.alert('Error', 'Please fill in all required fields');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Alert.alert('Error', 'Passwords do not match');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await axios.post(`${API_URL}/register`, {
+        name: fullName,
+        email,
+        phone,
+        password,
+        password_confirmation: confirmPassword,
+      });
+
+      if (response.data.success) {
+        router.replace('/login');
+      } else {
+        Alert.alert('Registration Failed', response.data.message || 'Please check your information');
+      }
+    } catch (error: any) {
+      const message = error.response?.data?.message || 'An error occurred during registration. Please try again.';
+      Alert.alert('Error', message);
+      console.error('Registration error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -53,6 +93,7 @@ export default function RegisterScreen() {
                 onChangeText={setFullName}
                 onFocus={() => setFocusedInput('fullName')}
                 onBlur={() => setFocusedInput(null)}
+                editable={!loading}
               />
             </View>
 
@@ -71,6 +112,7 @@ export default function RegisterScreen() {
                 onBlur={() => setFocusedInput(null)}
                 keyboardType="email-address"
                 autoCapitalize="none"
+                editable={!loading}
               />
             </View>
 
@@ -88,6 +130,7 @@ export default function RegisterScreen() {
                 onFocus={() => setFocusedInput('phone')}
                 onBlur={() => setFocusedInput(null)}
                 keyboardType="phone-pad"
+                editable={!loading}
               />
             </View>
 
@@ -106,6 +149,7 @@ export default function RegisterScreen() {
                   onFocus={() => setFocusedInput('password')}
                   onBlur={() => setFocusedInput(null)}
                   secureTextEntry
+                  editable={!loading}
                 />
               </View>
               <View style={[styles.inputContainer, styles.halfInput]}>
@@ -122,16 +166,22 @@ export default function RegisterScreen() {
                   onFocus={() => setFocusedInput('confirm')}
                   onBlur={() => setFocusedInput(null)}
                   secureTextEntry
+                  editable={!loading}
                 />
               </View>
             </View>
 
             <TouchableOpacity 
-              style={styles.signUpButton} 
+              style={[styles.signUpButton, loading && styles.signUpButtonDisabled]} 
               activeOpacity={0.8}
-              onPress={() => router.replace('/(tabs)')}
+              onPress={handleRegister}
+              disabled={loading}
             >
-              <Text style={styles.signUpButtonText}>SIGN UP</Text>
+              {loading ? (
+                <ActivityIndicator color="#FFFFFF" />
+              ) : (
+                <Text style={styles.signUpButtonText}>SIGN UP</Text>
+              )}
             </TouchableOpacity>
           </View>
 
@@ -139,7 +189,7 @@ export default function RegisterScreen() {
           <View style={styles.footer}>
             <Text style={styles.footerText}>Already have an account? </Text>
             <Link href="/login" asChild>
-              <TouchableOpacity>
+              <TouchableOpacity disabled={loading}>
                 <Text style={styles.signInText}>Sign In</Text>
               </TouchableOpacity>
             </Link>
@@ -229,6 +279,9 @@ const styles = StyleSheet.create({
     shadowRadius: 20,
     elevation: 5,
     marginTop: 24,
+  },
+  signUpButtonDisabled: {
+    opacity: 0.6,
   },
   signUpButtonText: {
     fontSize: 16,
