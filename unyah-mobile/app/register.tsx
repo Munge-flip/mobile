@@ -25,41 +25,49 @@ export default function RegisterScreen() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleRegister = async () => {
-    if (!fullName || !email || !password || !confirmPassword) {
-      Alert.alert('Error', 'Please fill in all required fields');
-      return;
+const handleRegister = async () => {
+  setErrorMessage(null);
+
+  // Simple client-side check to avoid unnecessary API calls
+  if (password !== confirmPassword) {
+    setErrorMessage('Passwords do not match');
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    const response = await axios.post(`${API_URL}/register`, {
+      name: fullName,
+      email,
+      phone,
+      password,
+      password_confirmation: confirmPassword,
+    });
+
+    // If backend returns success: true
+    if (response.data.success) {
+      router.replace('/login');
+    } else {
+      // If backend returns success: false with a message
+      setErrorMessage(response.data.message);
     }
-
-    if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const response = await axios.post(`${API_URL}/register`, {
-        name: fullName,
-        email,
-        phone,
-        password,
-        password_confirmation: confirmPassword,
-      });
-
-      if (response.data.success) {
-        router.replace('/login');
-      } else {
-        Alert.alert('Registration Failed', response.data.message || 'Please check your information');
-      }
-    } catch (error: any) {
-      const message = error.response?.data?.message || 'An error occurred during registration. Please try again.';
-      Alert.alert('Error', message);
-      console.error('Registration error:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  } catch (error: any) {
+    /**
+     * This is the "Cleanup" part:
+     * We prioritize the backend message. 
+     * If the backend is down or doesn't send a message, we use a short fallback.
+     */
+    const backendMessage = error.response?.data?.message;
+    setErrorMessage(backendMessage || 'An unexpected error occurred.');
+    
+    console.error('Registration Error:', error.response?.data);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <SafeAreaView style={styles.container}>
@@ -170,6 +178,12 @@ export default function RegisterScreen() {
                 />
               </View>
             </View>
+
+            {errorMessage && (
+              <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>{errorMessage}</Text>
+              </View>
+            )}
 
             <TouchableOpacity 
               style={[styles.signUpButton, loading && styles.signUpButtonDisabled]} 
@@ -302,4 +316,18 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#A38141',
   },
+  errorContainer: {
+  backgroundColor: 'rgba(255, 0, 0, 0.1)', // Light red tint
+  padding: 12,
+  borderRadius: 12,
+  marginBottom: 16,
+  borderWidth: 1,
+  borderColor: 'rgba(255, 0, 0, 0.3)',
+},
+errorText: {
+  color: '#FF6B6B', // Soft red that stands out on dark background
+  fontSize: 14,
+  fontWeight: '600',
+  textAlign: 'center',
+},
 });

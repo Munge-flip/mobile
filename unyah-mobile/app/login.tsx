@@ -24,10 +24,14 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleLogin = async () => {
+    // Clear previous errors
+    setErrorMessage(null);
+
     if (!email || !password) {
-      Alert.alert('Error', 'Please fill in all fields');
+      setErrorMessage('Please fill in all fields');
       return;
     }
 
@@ -40,20 +44,18 @@ export default function LoginScreen() {
 
       if (response.data.success) {
         const { token, user } = response.data.data;
-        
-        // Save to storage
         await AsyncStorage.setItem('auth_token', token);
         await AsyncStorage.setItem('user', JSON.stringify(user));
-        
-        // Redirect to home
         router.replace('/(tabs)');
       } else {
-        Alert.alert('Login Failed', response.data.message || 'Invalid credentials');
+        // Backend returned success: false
+        setErrorMessage(response.data.message || 'Invalid credentials');
       }
     } catch (error: any) {
-      const message = error.response?.data?.message || 'An error occurred during login. Please try again.';
-      Alert.alert('Error', message);
-      console.error('Login error:', error);
+      // Pull the message directly from the backend (e.g., "Invalid email or password")
+      const message = error.response?.data?.message || 'An error occurred during login.';
+      setErrorMessage(message);
+      console.error('Login error:', error.response?.data || error.message);
     } finally {
       setLoading(false);
     }
@@ -125,6 +127,12 @@ export default function LoginScreen() {
             <TouchableOpacity style={styles.forgotPassword} disabled={loading}>
               <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
             </TouchableOpacity>
+
+            {errorMessage && (
+              <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>{errorMessage}</Text>
+              </View>
+            )}
 
             <TouchableOpacity 
               style={[styles.loginButton, loading && styles.loginButtonDisabled]} 
@@ -274,5 +282,19 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '700',
     color: '#A38141',
+  },
+  errorContainer: {
+    backgroundColor: 'rgba(255, 0, 0, 0.1)',
+    padding: 12,
+    borderRadius: 28, // Matches the input and button roundness
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 0, 0, 0.3)',
+    alignItems: 'center',
+  },
+  errorText: {
+    color: '#FF6B6B',
+    fontSize: 14,
+    fontWeight: '600',
   },
 });
