@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,57 +6,34 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-  SafeAreaView,
   StatusBar,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import axios from 'axios';
+import { API_URL } from '@/constants/api';
 
 const { width } = Dimensions.get('window');
 
-const SERVICES = {
-  maintenance: [
-    { id: 'm1', name: 'Daily', price: 57 },
-    { id: 'm2', name: 'Weekly', price: 300 },
-    { id: 'm3', name: 'Monthly', price: 1300 },
-    { id: 'm4', name: 'Full Patch (6 weeks)', price: 700 },
-  ],
-  quests: [
-    { id: 'q1', name: 'Short quests', price: 60 },
-    { id: 'q2', name: 'Long quests', price: 170 },
-  ],
-  events: [
-    { id: 'e1', name: 'Light events untouched', price: 120 },
-    { id: 'e2', name: 'Full event untouched', price: 120 },
-    { id: 'e3', name: 'Light events halfway', price: 100 },
-    { id: 'e4', name: 'Full event halfway', price: 200 },
-  ],
-  endgame: [
-    { id: 'eg1', name: 'Memory of Chaos', price: 120 },
-    { id: 'eg2', name: 'Pure Fiction', price: 120 },
-    { id: 'eg3', name: 'Apocalyptic Shadow', price: 120 },
-  ],
-  simulatedUniverse: [
-    { id: 'su1', name: 'Basic Clear 1 World', price: 200 },
-    { id: 'su2', name: 'Full Clear All Worlds', price: 1000 },
-  ],
-  divergentUniverse: [
-    { id: 'du1', name: 'Basic Clear 1 Protocol', price: 200 },
-    { id: 'du2', name: 'Full Clear All Protocols', price: 1000 },
-  ],
-  explorations: [
-    { id: 'ex1', name: 'Herta Space Station' },
-    { id: 'ex2', name: 'Jarilo-VI' },
-    { id: 'ex3', name: 'Xianzhou Luofu' },
-    { id: 'ex4', name: 'Penacony' },
-    { id: 'ex5', name: 'Amphoreus' },
-  ],
-  completion: [
-    { id: 'ac1', name: 'Small area', price: 170 },
-    { id: 'ac2', name: 'Whole Map', price: 500 },
-  ],
-};
+interface Service {
+  id: number | string;
+  game: string;
+  category_name: string;
+  category: string;
+  name: string;
+  price: string | number;
+  is_active: boolean;
+}
+
+const EXPLORATIONS = [
+  { id: 'ex1', name: 'Herta Space Station' },
+  { id: 'ex2', name: 'Jarilo-VI' },
+  { id: 'ex3', name: 'Xianzhou Luofu' },
+  { id: 'ex4', name: 'Penacony' },
+  { id: 'ex5', name: 'Amphoreus' },
+];
 
 const WORLDS = ['Swarm Disaster', 'Gold & Gears', 'Unknowable Domain'];
 
@@ -64,22 +41,80 @@ export default function HSRServicesScreen() {
   const router = useRouter();
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedWorld, setSelectedWorld] = useState(WORLDS[0]);
+  const [services, setServices] = useState<{[key: string]: Service[]}>({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
+
+  const fetchServices = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`${API_URL}/services`);
+      if (response.data.success) {
+        const hsrServices = response.data.data.filter(
+          (s: Service) => s.game === "Honkai Star Rail" && s.is_active
+        );
+        
+        // Group by category_name
+        const grouped = hsrServices.reduce((acc: any, service: Service) => {
+          const category = service.category_name;
+          if (!acc[category]) acc[category] = [];
+          acc[category].push({
+            ...service,
+            price: typeof service.price === 'string' ? parseFloat(service.price) : service.price
+          });
+          return acc;
+        }, {});
+        
+        setServices(grouped);
+      } else {
+        setError('Failed to load services');
+      }
+    } catch (err) {
+      setError('An error occurred while fetching services');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const toggleService = (id: string) => {
     setSelectedServices(prev => 
-      prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]
+      prev.includes(String(id)) ? prev.filter(s => s !== String(id)) : [...prev, String(id)]
     );
   };
 
   const calculateTotal = () => {
     let total = 0;
-    Object.values(SERVICES).flat().forEach(s => {
-      if (selectedServices.includes(s.id) && 'price' in s) {
-        total += s.price;
+    Object.values(services).flat().forEach(s => {
+      if (selectedServices.includes(String(s.id))) {
+        total += Number(s.price);
       }
     });
     return total;
   };
+
+  if (loading) {
+    return (
+      <View style={[styles.container, styles.center]}>
+        <ActivityIndicator size="large" color="#7C3AED" />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={[styles.container, styles.center]}>
+        <Text style={styles.errorText}>{error}</Text>
+        <TouchableOpacity style={styles.retryBtn} onPress={fetchServices}>
+          <Text style={styles.retryBtnText}>Retry</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -117,10 +152,10 @@ export default function HSRServicesScreen() {
 
         {/* Sections */}
         <View style={styles.mainPadding}>
-          <Section title="Maintenance" items={SERVICES.maintenance} selected={selectedServices} onToggle={toggleService} />
-          <Section title="Regular Quests" items={SERVICES.quests} selected={selectedServices} onToggle={toggleService} />
-          <Section title="Events" items={SERVICES.events} selected={selectedServices} onToggle={toggleService} />
-          <Section title="Endgame" items={SERVICES.endgame} selected={selectedServices} onToggle={toggleService} />
+          <Section title="Maintenance" items={services['Maintenance'] || []} selected={selectedServices} onToggle={toggleService} />
+          <Section title="Regular Quests" items={services['Quests'] || []} selected={selectedServices} onToggle={toggleService} />
+          <Section title="Events" items={services['Events'] || []} selected={selectedServices} onToggle={toggleService} />
+          <Section title="Endgame" items={services['Endgame'] || []} selected={selectedServices} onToggle={toggleService} />
           
           {/* Simulated Universe */}
           <View style={styles.section}>
@@ -138,11 +173,11 @@ export default function HSRServicesScreen() {
               ))}
             </ScrollView>
             <View style={styles.sectionItems}>
-              {SERVICES.simulatedUniverse.map(item => (
+              {(services['Simulated Universe'] || []).map(item => (
                 <TouchableOpacity 
                   key={item.id} 
-                  style={[styles.serviceItem, selectedServices.includes(item.id) && styles.serviceItemActive]}
-                  onPress={() => toggleService(item.id)}
+                  style={[styles.serviceItem, selectedServices.includes(String(item.id)) && styles.serviceItemActive]}
+                  onPress={() => toggleService(String(item.id))}
                 >
                   <Text style={styles.serviceName}>{item.name}</Text>
                   <Text style={styles.servicePrice}>₱{item.price}</Text>
@@ -151,11 +186,11 @@ export default function HSRServicesScreen() {
             </View>
           </View>
 
-          <Section title="Divergent Universe" items={SERVICES.divergentUniverse} selected={selectedServices} onToggle={toggleService} />
+          <Section title="Divergent Universe" items={services['Divergent Universe'] || []} selected={selectedServices} onToggle={toggleService} />
 
           <Text style={styles.sectionTitle}>Explorations</Text>
           <View style={styles.regionGrid}>
-            {SERVICES.explorations.map(ex => (
+            {EXPLORATIONS.map(ex => (
               <TouchableOpacity 
                 key={ex.id}
                 style={[
@@ -183,7 +218,7 @@ export default function HSRServicesScreen() {
             ))}
           </View>
 
-          <Section title="100% Area Completion" items={SERVICES.completion} selected={selectedServices} onToggle={toggleService} />
+          <Section title="100% Area Completion" items={services['Area Completion'] || []} selected={selectedServices} onToggle={toggleService} />
 
           {/* Payment Method Group */}
           <View style={styles.paymentSection}>
@@ -244,9 +279,9 @@ function Section({ title, items, selected, onToggle }: any) {
             key={item.id} 
             style={[
               styles.serviceItem,
-              selected.includes(item.id) && styles.serviceItemActive
+              selected.includes(String(item.id)) && styles.serviceItemActive
             ]}
-            onPress={() => onToggle(item.id)}
+            onPress={() => onToggle(String(item.id))}
           >
             <Text style={styles.serviceName}>{item.name}</Text>
             <Text style={styles.servicePrice}>₱{item.price}</Text>
@@ -261,6 +296,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F0F2F5',
+  },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorText: {
+    color: '#EF4444',
+    fontSize: 16,
+    marginBottom: 16,
+    textAlign: 'center',
+    paddingHorizontal: 24,
+  },
+  retryBtn: {
+    backgroundColor: '#7C3AED',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+  },
+  retryBtnText: {
+    color: '#FFF',
+    fontWeight: '700',
   },
   scrollContent: {
     paddingBottom: 150,

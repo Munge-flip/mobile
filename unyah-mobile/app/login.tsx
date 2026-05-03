@@ -11,7 +11,6 @@ import {
   ScrollView,
   Image,
   ActivityIndicator,
-  Alert,
 } from 'react-native';
 import { Link, Stack, useRouter } from 'expo-router';
 import axios from 'axios';
@@ -49,11 +48,11 @@ export default function LoginScreen() {
         router.replace('/(tabs)');
       } else {
         // Backend returned success: false
-        setErrorMessage(response.data.message || 'Invalid credentials');
+        setErrorMessage(response.data.message || 'Incorrect username or password');
       }
     } catch (error: any) {
-      // Pull the message directly from the backend (e.g., "Invalid email or password")
-      const message = error.response?.data?.message || 'An error occurred during login.';
+      // Pull the message directly from the backend or fallback to "Incorrect username or password"
+      const message = error.response?.data?.message || 'Incorrect username or password';
       setErrorMessage(message);
       console.error('Login error:', error.response?.data || error.message);
     } finally {
@@ -150,7 +149,7 @@ export default function LoginScreen() {
 
           {/* Footer Section */}
           <View style={styles.footer}>
-            <Text style={styles.footerText}>Don't have an account? </Text>
+            <Text style={styles.footerText}>Don&apos;t have an account? </Text>
             <Link href="/register" asChild>
               <TouchableOpacity disabled={loading}>
                 <Text style={styles.createAccountText}>Create Account</Text>

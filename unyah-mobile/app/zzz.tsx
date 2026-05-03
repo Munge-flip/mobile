@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,65 +6,101 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-  SafeAreaView,
   StatusBar,
-  Dimensions,
+  ActivityIndicator,
 } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import axios from 'axios';
+import { API_URL } from '@/constants/api';
 
-const { width } = Dimensions.get('window');
-
-const SERVICES = {
-  maintenance: [
-    { id: 'm1', name: 'Daily', price: 57 },
-    { id: 'm2', name: 'Weekly', price: 300 },
-    { id: 'm3', name: 'Monthly', price: 1300 },
-    { id: 'm4', name: 'Full Patch (6 weeks)', price: 1700 },
-  ],
-  quests: [
-    { id: 'q1', name: 'Short quests', price: 60 },
-    { id: 'q2', name: 'Long quests', price: 170 },
-  ],
-  events: [
-    { id: 'e1', name: 'Light events untouched', price: 120 },
-    { id: 'e2', name: 'Full event untouched', price: 120 },
-    { id: 'e3', name: 'Light events halfway', price: 100 },
-    { id: 'e4', name: 'Full event halfway', price: 200 },
-  ],
-  endgame: [
-    { id: 'eg1', name: 'Shiyu Defense', price: 150 },
-    { id: 'eg2', name: 'Deadly Assault', price: 150 },
-  ],
-  hollowZero: [
-    { id: 'hz1', name: '20 levels', price: 200 },
-    { id: 'hz2', name: 'Full level', price: 1000 },
-  ],
-  completion: [
-    { id: 'c1', name: '1 Location', price: 170 },
-    { id: 'c2', name: 'Whole Location', price: 500 },
-  ],
-};
+interface Service {
+  id: number | string;
+  game: string;
+  category_name: string;
+  category: string;
+  name: string;
+  price: string | number;
+  is_active: boolean;
+}
 
 export default function ZZZServicesScreen() {
   const router = useRouter();
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [services, setServices] = useState<{[key: string]: Service[]}>({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
+
+  const fetchServices = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`${API_URL}/services`);
+      if (response.data.success) {
+        const zzzServices = response.data.data.filter(
+          (s: Service) => s.game === "Zenless Zone Zero" && s.is_active
+        );
+        
+        // Group by category_name
+        const grouped = zzzServices.reduce((acc: any, service: Service) => {
+          const category = service.category_name;
+          if (!acc[category]) acc[category] = [];
+          acc[category].push({
+            ...service,
+            price: typeof service.price === 'string' ? parseFloat(service.price) : service.price
+          });
+          return acc;
+        }, {});
+        
+        setServices(grouped);
+      } else {
+        setError('Failed to load services');
+      }
+    } catch (err) {
+      setError('An error occurred while fetching services');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const toggleService = (id: string) => {
     setSelectedServices(prev => 
-      prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]
+      prev.includes(String(id)) ? prev.filter(s => s !== String(id)) : [...prev, String(id)]
     );
   };
 
   const calculateTotal = () => {
     let total = 0;
-    Object.values(SERVICES).flat().forEach(s => {
-      if (selectedServices.includes(s.id)) {
-        total += s.price;
+    Object.values(services).flat().forEach(s => {
+      if (selectedServices.includes(String(s.id))) {
+        total += Number(s.price);
       }
     });
     return total;
   };
+
+  if (loading) {
+    return (
+      <View style={[styles.container, styles.center]}>
+        <ActivityIndicator size="large" color="#EAB308" />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={[styles.container, styles.center]}>
+        <Text style={styles.errorText}>{error}</Text>
+        <TouchableOpacity style={styles.retryBtn} onPress={fetchServices}>
+          <Text style={styles.retryBtnText}>Retry</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -102,10 +138,10 @@ export default function ZZZServicesScreen() {
 
         {/* Sections */}
         <View style={styles.mainPadding}>
-          <Section title="Maintenance" items={SERVICES.maintenance} selected={selectedServices} onToggle={toggleService} color="#EAB308" />
-          <Section title="Regular Quests" items={SERVICES.quests} selected={selectedServices} onToggle={toggleService} color="#EAB308" />
-          <Section title="Events" items={SERVICES.events} selected={selectedServices} onToggle={toggleService} color="#EAB308" />
-          <Section title="Endgame" items={SERVICES.endgame} selected={selectedServices} onToggle={toggleService} color="#EAB308" />
+          <Section title="Maintenance" items={services['Maintenance'] || []} selected={selectedServices} onToggle={toggleService} color="#EAB308" />
+          <Section title="Regular Quests" items={services['Quests'] || []} selected={selectedServices} onToggle={toggleService} color="#EAB308" />
+          <Section title="Events" items={services['Events'] || []} selected={selectedServices} onToggle={toggleService} color="#EAB308" />
+          <Section title="Endgame" items={services['Endgame'] || []} selected={selectedServices} onToggle={toggleService} color="#EAB308" />
           
           {/* Hollow Zero */}
           <View style={styles.section}>
@@ -115,11 +151,11 @@ export default function ZZZServicesScreen() {
               <TouchableOpacity style={styles.gridItem}><Text style={styles.gridItemText}>Withered Domain</Text></TouchableOpacity>
             </View>
             <View style={styles.sectionItems}>
-              {SERVICES.hollowZero.map(item => (
+              {(services['Hollow Zero'] || []).map(item => (
                 <TouchableOpacity 
                   key={item.id} 
-                  style={[styles.serviceItem, selectedServices.includes(item.id) && styles.serviceItemActive]}
-                  onPress={() => toggleService(item.id)}
+                  style={[styles.serviceItem, selectedServices.includes(String(item.id)) && styles.serviceItemActive]}
+                  onPress={() => toggleService(String(item.id))}
                 >
                   <Text style={styles.serviceName}>{item.name}</Text>
                   <Text style={[styles.servicePrice, { color: '#CA8A04' }]}>₱{item.price}</Text>
@@ -128,7 +164,7 @@ export default function ZZZServicesScreen() {
             </View>
           </View>
 
-          <Section title="100% Area Completion" items={SERVICES.completion} selected={selectedServices} onToggle={toggleService} color="#EAB308" />
+          <Section title="100% Area Completion" items={services['Area Completion'] || []} selected={selectedServices} onToggle={toggleService} color="#EAB308" />
 
           {/* Payment Methods */}
           <View style={styles.paymentSection}>
@@ -189,9 +225,9 @@ function Section({ title, items, selected, onToggle, color }: any) {
             key={item.id} 
             style={[
               styles.serviceItem,
-              selected.includes(item.id) && styles.serviceItemActive
+              selected.includes(String(item.id)) && styles.serviceItemActive
             ]}
-            onPress={() => onToggle(item.id)}
+            onPress={() => onToggle(String(item.id))}
           >
             <Text style={styles.serviceName}>{item.name}</Text>
             <Text style={[styles.servicePrice, { color: color || '#7C3AED' }]}>₱{item.price}</Text>
@@ -206,6 +242,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F8FAFC',
+  },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorText: {
+    color: '#EF4444',
+    fontSize: 16,
+    marginBottom: 16,
+    textAlign: 'center',
+    paddingHorizontal: 24,
+  },
+  retryBtn: {
+    backgroundColor: '#EAB308',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+  },
+  retryBtnText: {
+    color: '#000',
+    fontWeight: '700',
   },
   scrollContent: {
     paddingBottom: 150,

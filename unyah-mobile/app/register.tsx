@@ -10,7 +10,6 @@ import {
   Platform,
   ScrollView,
   ActivityIndicator,
-  Alert,
 } from 'react-native';
 import { Link, Stack, useRouter } from 'expo-router';
 import axios from 'axios';
@@ -52,16 +51,17 @@ const handleRegister = async () => {
       router.replace('/login');
     } else {
       // If backend returns success: false with a message
-      setErrorMessage(response.data.message);
+      setErrorMessage(response.data.message || 'Email already used');
     }
   } catch (error: any) {
-    /**
-     * This is the "Cleanup" part:
-     * We prioritize the backend message. 
-     * If the backend is down or doesn't send a message, we use a short fallback.
-     */
     const backendMessage = error.response?.data?.message;
-    setErrorMessage(backendMessage || 'An unexpected error occurred.');
+    const validationErrors = error.response?.data?.errors;
+    
+    if (validationErrors?.email) {
+      setErrorMessage('Email already used');
+    } else {
+      setErrorMessage(backendMessage || 'An unexpected error occurred.');
+    }
     
     console.error('Registration Error:', error.response?.data);
   } finally {

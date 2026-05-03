@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,88 +6,113 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-  SafeAreaView,
   StatusBar,
-  // Dimensions,
-  // useWindowDimensions,
-} from 'react-native';
+  ActivityIndicator,
+ useWindowDimensions } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import { useWindowDimensions } from 'react-native';
 
-// const { width } = Dimensions.get('window');
-// const { width } = useWindowDimensions();
+import axios from 'axios';
+import { API_URL } from '@/constants/api';
 
+interface Service {
+  id: number | string;
+  game: string;
+  category_name: string;
+  category: string;
+  name: string;
+  price: string | number;
+  is_active: boolean;
+}
 
-const SERVICES = {
-  maintenance: [
-    { id: 'm1', name: 'Daily', price: 57 },
-    { id: 'm2', name: 'Weekly', price: 300 },
-    { id: 'm3', name: 'Monthly', price: 1300 },
-    { id: 'm4', name: 'Full Patch (6 weeks)', price: 700 },
-  ],
-  quests: [
-    { id: 'q1', name: 'Short quests (1-2 parts)', price: 50 },
-    { id: 'q2', name: 'Long quests (multiple parts)', price: 170 },
-  ],
-  events: [
-    { id: 'e1', name: 'Light events', price: 120 },
-    { id: 'e2', name: 'Full event', price: 120 },
-    { id: 'e3', name: 'Light events (Half)', price: 100 },
-    { id: 'e4', name: 'Full event (Half)', price: 200 },
-  ],
-  endgame: [
-    { id: 'eg1', name: 'Spiral abyss', price: 120 },
-    { id: 'eg2', name: 'Imaginarium Theater', price: 120 },
-    { id: 'eg3', name: 'Stygian Onslaught', price: 120 },
-  ],
-  explorations: [
-    { id: 'ex1', name: 'Mondstadt' },
-    { id: 'ex2', name: 'Liyue' },
-    { id: 'ex3', name: 'Inazuma' },
-    { id: 'ex4', name: 'Fontaine' },
-    { id: 'ex5', name: 'Sumeru' },
-    { id: 'ex6', name: 'Natlan' },
-    { id: 'ex7', name: 'Nod Krai' },
-  ],
-  chestFarming: [
-    { id: 'cf1', name: 'Light farming 30 chests', price: 120 },
-    { id: 'cf2', name: 'Full chest run', price: 120 },
-  ],
-  oculi: [
-    { id: 'oc1', name: '1 Region', price: 170 },
-    { id: 'oc2', name: 'Full map', price: 120 },
-  ],
-  waypoints: [
-    { id: 'wp1', name: 'Small Area', price: 70 },
-    { id: 'wp2', name: 'Full Region', price: 70 },
-  ],
-  completion: [
-    { id: 'ac1', name: 'Small area', price: 170 },
-    { id: 'ac2', name: 'Whole region', price: 120 },
-  ],
-};
+const EXPLORATIONS = [
+  { id: 'ex1', name: 'Mondstadt' },
+  { id: 'ex2', name: 'Liyue' },
+  { id: 'ex3', name: 'Inazuma' },
+  { id: 'ex4', name: 'Fontaine' },
+  { id: 'ex5', name: 'Sumeru' },
+  { id: 'ex6', name: 'Natlan' },
+  { id: 'ex7', name: 'Nod Krai' },
+];
 
 export default function GenshinServicesScreen() {
   const { width } = useWindowDimensions();
   const router = useRouter();
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [services, setServices] = useState<{[key: string]: Service[]}>({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
+
+  const fetchServices = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`${API_URL}/services`);
+      if (response.data.success) {
+        const genshinServices = response.data.data.filter(
+          (s: Service) => s.game === "Genshin Impact" && s.is_active
+        );
+        
+        // Group by category_name
+        const grouped = genshinServices.reduce((acc: any, service: Service) => {
+          const category = service.category_name;
+          if (!acc[category]) acc[category] = [];
+          acc[category].push({
+            ...service,
+            price: typeof service.price === 'string' ? parseFloat(service.price) : service.price
+          });
+          return acc;
+        }, {});
+        
+        setServices(grouped);
+      } else {
+        setError('Failed to load services');
+      }
+    } catch (err) {
+      setError('An error occurred while fetching services');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const toggleService = (id: string) => {
     setSelectedServices(prev => 
-      prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]
+      prev.includes(String(id)) ? prev.filter(s => s !== String(id)) : [...prev, String(id)]
     );
   };
 
   const calculateTotal = () => {
     let total = 0;
-    Object.values(SERVICES).flat().forEach(s => {
-      if (selectedServices.includes(s.id) && 'price' in s) {
-        total += s.price;
+    Object.values(services).flat().forEach(s => {
+      if (selectedServices.includes(String(s.id))) {
+        total += Number(s.price);
       }
     });
     return total;
   };
+
+  if (loading) {
+    return (
+      <View style={[styles.container, styles.center]}>
+        <ActivityIndicator size="large" color="#7C3AED" />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={[styles.container, styles.center]}>
+        <Text style={styles.errorText}>{error}</Text>
+        <TouchableOpacity style={styles.retryBtn} onPress={fetchServices}>
+          <Text style={styles.retryBtnText}>Retry</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -125,14 +150,14 @@ export default function GenshinServicesScreen() {
 
         {/* Sections */}
         <View style={styles.mainPadding}>
-          <Section title="Maintenance" items={SERVICES.maintenance} selected={selectedServices} onToggle={toggleService} />
-          <Section title="Regular Quests" items={SERVICES.quests} selected={selectedServices} onToggle={toggleService} />
-          <Section title="Events" items={SERVICES.events} selected={selectedServices} onToggle={toggleService} />
-          <Section title="Endgame" items={SERVICES.endgame} selected={selectedServices} onToggle={toggleService} />
+          <Section title="Maintenance" items={services['Maintenance'] || []} selected={selectedServices} onToggle={toggleService} />
+          <Section title="Regular Quests" items={services['Quests'] || []} selected={selectedServices} onToggle={toggleService} />
+          <Section title="Events" items={services['Events'] || []} selected={selectedServices} onToggle={toggleService} />
+          <Section title="Endgame" items={services['Endgame'] || []} selected={selectedServices} onToggle={toggleService} />
           
           <Text style={styles.sectionTitle}>Explorations</Text>
           <View style={styles.regionGrid}>
-            {SERVICES.explorations.map(ex => (
+            {EXPLORATIONS.map(ex => (
               <TouchableOpacity 
                 key={ex.id}
                 style={[
@@ -163,10 +188,10 @@ export default function GenshinServicesScreen() {
             ))}
           </View>
 
-          <Section title="Chest Farming" items={SERVICES.chestFarming} selected={selectedServices} onToggle={toggleService} />
-          <Section title="Collecting oculi" items={SERVICES.oculi} selected={selectedServices} onToggle={toggleService} />
-          <Section title="Unlocking Waypoints & Statues" items={SERVICES.waypoints} selected={selectedServices} onToggle={toggleService} />
-          <Section title="100% Area Completion" items={SERVICES.completion} selected={selectedServices} onToggle={toggleService} />
+          <Section title="Chest Farming" items={services['Chest Farming'] || []} selected={selectedServices} onToggle={toggleService} />
+          <Section title="Collecting oculi" items={services['Oculi'] || []} selected={selectedServices} onToggle={toggleService} />
+          <Section title="Unlocking Waypoints & Statues" items={services['Waypoints'] || []} selected={selectedServices} onToggle={toggleService} />
+          <Section title="100% Area Completion" items={services['Area Completion'] || []} selected={selectedServices} onToggle={toggleService} />
 
           {/* Payment Methods */}
           <View style={styles.paymentSection}>
@@ -227,9 +252,9 @@ function Section({ title, items, selected, onToggle }: any) {
             key={item.id} 
             style={[
               styles.serviceItem,
-              selected.includes(item.id) && styles.serviceItemActive
+              selected.includes(String(item.id)) && styles.serviceItemActive
             ]}
-            onPress={() => onToggle(item.id)}
+            onPress={() => onToggle(String(item.id))}
           >
             <Text style={styles.serviceName}>{item.name}</Text>
             <Text style={styles.servicePrice}>₱{item.price}</Text>
@@ -244,6 +269,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F8FAFC',
+  },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorText: {
+    color: '#EF4444',
+    fontSize: 16,
+    marginBottom: 16,
+    textAlign: 'center',
+    paddingHorizontal: 24,
+  },
+  retryBtn: {
+    backgroundColor: '#7C3AED',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+  },
+  retryBtnText: {
+    color: '#FFF',
+    fontWeight: '700',
   },
   scrollContent: {
     paddingBottom: 150,
@@ -365,7 +411,6 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   regionCard: {
-    // width: (width - 72) / 2,
     backgroundColor: '#FFF',
     borderRadius: 16,
     overflow: 'hidden',
@@ -379,10 +424,6 @@ const styles = StyleSheet.create({
   },
   regionCardActive: {
     borderColor: '#A78BFA',
-  },
-  regionPlaceholder: {
-    height: 80,
-    backgroundColor: '#E2E8F0',
   },
   regionImg: {
     height: 80,
@@ -502,5 +543,13 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 14,
     textTransform: 'uppercase',
+  },
+  regionImgContainer: {
+    height: 80,
+    width: '100%',
+    backgroundColor: '#E2E8F0',
+    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
