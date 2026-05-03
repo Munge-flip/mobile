@@ -88,14 +88,22 @@ export default function HSRServicesScreen() {
   };
 
   const calculateTotal = () => {
-    let total = 0;
-    Object.values(services).flat().forEach(s => {
-      if (selectedServices.includes(String(s.id))) {
-        total += Number(s.price);
-      }
-    });
-    return total;
-  };
+  // Count selected regions (explorations)
+  const selectedRegions = EXPLORATIONS.filter(ex => 
+    selectedServices.includes(ex.id)
+  ).length;
+  
+  // Use at least 1 as multiplier even if no region selected
+  const multiplier = selectedRegions > 0 ? selectedRegions : 1;
+
+  let total = 0;
+  Object.values(services).flat().forEach(s => {
+    if (selectedServices.includes(String(s.id))) {
+      total += Number(s.price) * multiplier;
+    }
+  });
+  return total;
+};
 
   if (loading) {
     return (
