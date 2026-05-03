@@ -139,7 +139,7 @@ export default function ZZZServicesScreen() {
         {/* Sections */}
         <View style={styles.mainPadding}>
           <Section title="Maintenance" items={services['Maintenance'] || []} selected={selectedServices} onToggle={toggleService} color="#EAB308" />
-          <Section title="Regular Quests" items={services['Quests'] || []} selected={selectedServices} onToggle={toggleService} color="#EAB308" />
+          <Section title="Regular Quests" items={services['Regular Quests'] || []} selected={selectedServices} onToggle={toggleService} color="#EAB308" />
           <Section title="Events" items={services['Events'] || []} selected={selectedServices} onToggle={toggleService} color="#EAB308" />
           <Section title="Endgame" items={services['Endgame'] || []} selected={selectedServices} onToggle={toggleService} color="#EAB308" />
           
@@ -164,7 +164,7 @@ export default function ZZZServicesScreen() {
             </View>
           </View>
 
-          <Section title="100% Area Completion" items={services['Area Completion'] || []} selected={selectedServices} onToggle={toggleService} color="#EAB308" />
+          <Section title="100% Area Completion" items={services['100% Area Completion'] || []} selected={selectedServices} onToggle={toggleService} color="#EAB308" />
 
           {/* Payment Methods */}
           <View style={styles.paymentSection}>

@@ -151,7 +151,7 @@ export default function GenshinServicesScreen() {
         {/* Sections */}
         <View style={styles.mainPadding}>
           <Section title="Maintenance" items={services['Maintenance'] || []} selected={selectedServices} onToggle={toggleService} />
-          <Section title="Regular Quests" items={services['Quests'] || []} selected={selectedServices} onToggle={toggleService} />
+          <Section title="Regular Quests" items={services['Regular Quests'] || []} selected={selectedServices} onToggle={toggleService} />
           <Section title="Events" items={services['Events'] || []} selected={selectedServices} onToggle={toggleService} />
           <Section title="Endgame" items={services['Endgame'] || []} selected={selectedServices} onToggle={toggleService} />
           
@@ -189,9 +189,9 @@ export default function GenshinServicesScreen() {
           </View>
 
           <Section title="Chest Farming" items={services['Chest Farming'] || []} selected={selectedServices} onToggle={toggleService} />
-          <Section title="Collecting oculi" items={services['Oculi'] || []} selected={selectedServices} onToggle={toggleService} />
-          <Section title="Unlocking Waypoints & Statues" items={services['Waypoints'] || []} selected={selectedServices} onToggle={toggleService} />
-          <Section title="100% Area Completion" items={services['Area Completion'] || []} selected={selectedServices} onToggle={toggleService} />
+          <Section title="Collecting oculis" items={services['Collecting oculi'] || []} selected={selectedServices} onToggle={toggleService} />
+          <Section title="Unlocking Waypoints & Statues" items={services['Unlocking Waypoints & Statues'] || []} selected={selectedServices} onToggle={toggleService} />
+          <Section title="100% Area Completion" items={services['100% Area Completion'] || []} selected={selectedServices} onToggle={toggleService} />
 
           {/* Payment Methods */}
           <View style={styles.paymentSection}>

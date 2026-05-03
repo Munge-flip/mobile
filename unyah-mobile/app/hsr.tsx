@@ -153,7 +153,7 @@ export default function HSRServicesScreen() {
         {/* Sections */}
         <View style={styles.mainPadding}>
           <Section title="Maintenance" items={services['Maintenance'] || []} selected={selectedServices} onToggle={toggleService} />
-          <Section title="Regular Quests" items={services['Quests'] || []} selected={selectedServices} onToggle={toggleService} />
+          <Section title="Regular Quests" items={services['Regular Quests'] || []} selected={selectedServices} onToggle={toggleService} />
           <Section title="Events" items={services['Events'] || []} selected={selectedServices} onToggle={toggleService} />
           <Section title="Endgame" items={services['Endgame'] || []} selected={selectedServices} onToggle={toggleService} />
           
@@ -218,7 +218,7 @@ export default function HSRServicesScreen() {
             ))}
           </View>
 
-          <Section title="100% Area Completion" items={services['Area Completion'] || []} selected={selectedServices} onToggle={toggleService} />
+          <Section title="100% Area Completion" items={services['100% Area Completion'] || []} selected={selectedServices} onToggle={toggleService} />
 
           {/* Payment Method Group */}
           <View style={styles.paymentSection}>
