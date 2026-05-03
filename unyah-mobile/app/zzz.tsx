@@ -13,6 +13,7 @@ import { Stack, useRouter } from 'expo-router';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import axios from 'axios';
 import { API_URL } from '@/constants/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface Service {
   id: number | string;
@@ -30,6 +31,8 @@ export default function ZZZServicesScreen() {
   const [services, setServices] = useState<{[key: string]: Service[]}>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isOrdering, setIsOrdering] = useState(false);
+  const [orderError, setOrderError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchServices();
@@ -81,6 +84,49 @@ export default function ZZZServicesScreen() {
       }
     });
     return total;
+  };
+
+  const handlePlaceOrder = async () => {
+    setOrderError(null);
+    const token = await AsyncStorage.getItem('auth_token');
+    
+    if (!token) {
+      router.push('/login');
+      return;
+    }
+
+    const selectedServiceItems = Object.values(services)
+      .flat()
+      .filter(s => selectedServices.includes(String(s.id)));
+
+    if (selectedServiceItems.length === 0) {
+      setOrderError('Please select at least one service');
+      return;
+    }
+
+    setIsOrdering(true);
+    try {
+      // Set default header
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+      // Place each order
+      await Promise.all(selectedServiceItems.map(s => 
+        axios.post(`${API_URL}/user/orders`, {
+          game: 'Zenless Zone Zero',
+          service_category: s.category_name,
+          service_type: s.name,
+          price: Number(s.price), // No multiplier for ZZZ as no explorations defined
+          payment_method: 'GCASH_QR'
+        })
+      ));
+
+      router.replace('/(tabs)/orders');
+    } catch (err: any) {
+      setOrderError(err.response?.data?.message || 'An error occurred while placing your order.');
+      console.error('Order error:', err);
+    } finally {
+      setIsOrdering(false);
+    }
   };
 
   if (loading) {
@@ -166,6 +212,10 @@ export default function ZZZServicesScreen() {
 
           <Section title="100% Area Completion" items={services['100% Area Completion'] || []} selected={selectedServices} onToggle={toggleService} color="#EAB308" />
 
+          {orderError && (
+            <Text style={styles.inlineError}>{orderError}</Text>
+          )}
+
           {/* Payment Methods */}
           <View style={styles.paymentSection}>
             <Text style={styles.paymentHeader}>Payment Method</Text>
@@ -207,8 +257,16 @@ export default function ZZZServicesScreen() {
           <Text style={styles.totalLabel}>Total Order</Text>
           <Text style={[styles.totalPrice, { color: '#EAB308', fontStyle: 'italic' }]}>₱{calculateTotal().toLocaleString()}</Text>
         </View>
-        <TouchableOpacity style={[styles.placeOrderBtn, { backgroundColor: '#EAB308' }]}>
-          <Text style={[styles.placeOrderBtnText, { color: '#000' }]}>Get Started</Text>
+        <TouchableOpacity 
+          style={[styles.placeOrderBtn, { backgroundColor: '#EAB308' }, isOrdering && styles.placeOrderBtnDisabled]}
+          onPress={handlePlaceOrder}
+          disabled={isOrdering}
+        >
+          {isOrdering ? (
+            <ActivityIndicator color="#000" />
+          ) : (
+            <Text style={[styles.placeOrderBtnText, { color: '#000' }]}>Get Started</Text>
+          )}
         </TouchableOpacity>
       </View>
     </View>
@@ -263,6 +321,16 @@ const styles = StyleSheet.create({
   retryBtnText: {
     color: '#000',
     fontWeight: '700',
+  },
+  inlineError: {
+    color: '#EF4444',
+    fontSize: 14,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginBottom: 16,
+    backgroundColor: '#FEE2E2',
+    padding: 12,
+    borderRadius: 12,
   },
   scrollContent: {
     paddingBottom: 150,
@@ -492,6 +560,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 20,
     elevation: 10,
+  },
+  placeOrderBtnDisabled: {
+    opacity: 0.7,
+    backgroundColor: '#9CA3AF',
   },
   placeOrderBtnText: {
     fontWeight: '900',

@@ -14,6 +14,7 @@ import { Stack, useRouter } from 'expo-router';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import axios from 'axios';
 import { API_URL } from '@/constants/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('window');
 
@@ -44,6 +45,8 @@ export default function HSRServicesScreen() {
   const [services, setServices] = useState<{[key: string]: Service[]}>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isOrdering, setIsOrdering] = useState(false);
+  const [orderError, setOrderError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchServices();
@@ -88,22 +91,70 @@ export default function HSRServicesScreen() {
   };
 
   const calculateTotal = () => {
-  // Count selected regions (explorations)
-  const selectedRegions = EXPLORATIONS.filter(ex => 
-    selectedServices.includes(ex.id)
-  ).length;
-  
-  // Use at least 1 as multiplier even if no region selected
-  const multiplier = selectedRegions > 0 ? selectedRegions : 1;
+    // Count selected regions (explorations)
+    const selectedRegions = EXPLORATIONS.filter(ex => 
+      selectedServices.includes(ex.id)
+    ).length;
+    
+    // Use at least 1 as multiplier even if no region selected
+    const multiplier = selectedRegions > 0 ? selectedRegions : 1;
 
-  let total = 0;
-  Object.values(services).flat().forEach(s => {
-    if (selectedServices.includes(String(s.id))) {
-      total += Number(s.price) * multiplier;
+    let total = 0;
+    Object.values(services).flat().forEach(s => {
+      if (selectedServices.includes(String(s.id))) {
+        total += Number(s.price) * multiplier;
+      }
+    });
+    return total;
+  };
+
+  const handlePlaceOrder = async () => {
+    setOrderError(null);
+    const token = await AsyncStorage.getItem('auth_token');
+    
+    if (!token) {
+      router.push('/login');
+      return;
     }
-  });
-  return total;
-};
+
+    const selectedRegionsCount = EXPLORATIONS.filter(ex => 
+      selectedServices.includes(ex.id)
+    ).length;
+    const multiplier = selectedRegionsCount > 0 ? selectedRegionsCount : 1;
+
+    const selectedServiceItems = Object.values(services)
+      .flat()
+      .filter(s => selectedServices.includes(String(s.id)));
+
+    if (selectedServiceItems.length === 0) {
+      setOrderError('Please select at least one service');
+      return;
+    }
+
+    setIsOrdering(true);
+    try {
+      // Set default header
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+      // Place each order
+      await Promise.all(selectedServiceItems.map(s => 
+        axios.post(`${API_URL}/user/orders`, {
+          game: 'Honkai Star Rail',
+          service_category: s.category_name,
+          service_type: s.name,
+          price: Number(s.price) * multiplier,
+          payment_method: 'GCASH_QR'
+        })
+      ));
+
+      router.replace('/(tabs)/orders');
+    } catch (err: any) {
+      setOrderError(err.response?.data?.message || 'An error occurred while placing your order.');
+      console.error('Order error:', err);
+    } finally {
+      setIsOrdering(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -228,6 +279,10 @@ export default function HSRServicesScreen() {
 
           <Section title="100% Area Completion" items={services['100% Area Completion'] || []} selected={selectedServices} onToggle={toggleService} />
 
+          {orderError && (
+            <Text style={styles.inlineError}>{orderError}</Text>
+          )}
+
           {/* Payment Method Group */}
           <View style={styles.paymentSection}>
             <Text style={styles.paymentHeader}>Payment Method</Text>
@@ -269,8 +324,16 @@ export default function HSRServicesScreen() {
           <Text style={styles.totalLabel}>Total Order</Text>
           <Text style={styles.totalPrice}>₱{calculateTotal().toLocaleString()}</Text>
         </View>
-        <TouchableOpacity style={styles.placeOrderBtn}>
-          <Text style={styles.placeOrderBtnText}>Place Order</Text>
+        <TouchableOpacity 
+          style={[styles.placeOrderBtn, isOrdering && styles.placeOrderBtnDisabled]}
+          onPress={handlePlaceOrder}
+          disabled={isOrdering}
+        >
+          {isOrdering ? (
+            <ActivityIndicator color="#FFF" />
+          ) : (
+            <Text style={styles.placeOrderBtnText}>Place Order</Text>
+          )}
         </TouchableOpacity>
       </View>
     </View>
@@ -325,6 +388,16 @@ const styles = StyleSheet.create({
   retryBtnText: {
     color: '#FFF',
     fontWeight: '700',
+  },
+  inlineError: {
+    color: '#EF4444',
+    fontSize: 14,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginBottom: 16,
+    backgroundColor: '#FEE2E2',
+    padding: 12,
+    borderRadius: 12,
   },
   scrollContent: {
     paddingBottom: 150,
@@ -611,6 +684,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 20,
     elevation: 10,
+  },
+  placeOrderBtnDisabled: {
+    opacity: 0.7,
+    backgroundColor: '#9CA3AF',
   },
   placeOrderBtnText: {
     color: '#FFF',

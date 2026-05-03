@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,36 +7,101 @@ import {
   TouchableOpacity,
   SafeAreaView,
   StatusBar,
+  ActivityIndicator,
 } from 'react-native';
-import { Stack, Link } from 'expo-router';
+import { Stack, useRouter, useFocusEffect } from 'expo-router';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_URL } from '@/constants/api';
 
-const ORDERS = [
-  {
-    id: 'HP-2026-001',
-    date: 'April 20, 2026',
-    service: 'Spiral Abyss Clear',
-    game: 'Genshin Impact',
-    total: 120,
-    status: 'In Progress',
-    statusBg: '#EFF6FF',
-    statusText: '#2563EB',
-  },
-  {
-    id: 'HP-2026-002',
-    date: 'April 19, 2026',
-    service: 'Daily Commissions',
-    game: 'HSR',
-    total: 57,
-    status: 'Pending',
-    statusBg: '#FEF9C3',
-    statusText: '#CA8A04',
-  },
-];
+interface Order {
+  id: number;
+  game: string;
+  service_category: string;
+  service_type: string;
+  price: string;
+  status: string;
+  payment_status: string;
+  created_at: string;
+}
+
+const STATUS_STYLES: { [key: string]: { bg: string, text: string } } = {
+  pending: { bg: '#FEF9C3', text: '#CA8A04' },
+  in_progress: { bg: '#EFF6FF', text: '#2563EB' },
+  completed: { bg: '#F0FDF4', text: '#16A34A' },
+  cancelled: { bg: '#FEF2F2', text: '#DC2626' },
+};
 
 const FILTERS = ['All Orders', 'Pending', 'In Progress', 'Completed'];
 
 export default function OrdersScreen() {
+  const router = useRouter();
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [activeFilter, setActiveFilter] = useState('All Orders');
+
+  const applyFilter = useCallback((allOrders: Order[], filter: string) => {
+    if (filter === 'All Orders') {
+      setFilteredOrders(allOrders);
+    } else {
+      const statusKey = filter.toLowerCase().replace(' ', '_');
+      setFilteredOrders(allOrders.filter(o => o.status === statusKey));
+    }
+  }, []);
+
+  const fetchOrders = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const token = await AsyncStorage.getItem('auth_token');
+
+      if (!token) {
+        router.replace('/login');
+        return;
+      }
+
+      const response = await axios.get(`${API_URL}/user/orders`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (response.data.success) {
+        const allOrders = response.data.data;
+        setOrders(allOrders);
+        applyFilter(allOrders, activeFilter);
+      } else {
+        setError('Failed to load orders');
+      }
+    } catch (err) {
+      setError('An error occurred while fetching orders');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [activeFilter, applyFilter, router]);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchOrders();
+    }, [fetchOrders])
+  );
+
+  const handleFilterChange = (filter: string) => {
+    setActiveFilter(filter);
+    applyFilter(orders, filter);
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
@@ -58,55 +123,83 @@ export default function OrdersScreen() {
           style={styles.filterScroll}
           contentContainerStyle={styles.filterContent}
         >
-          {FILTERS.map((filter, index) => (
+          {FILTERS.map((filter) => (
             <TouchableOpacity 
               key={filter} 
               style={[
                 styles.filterBtn, 
-                index === 0 && styles.filterBtnActive,
-                index === 0 && styles.activeShadow
+                activeFilter === filter && styles.filterBtnActive,
+                activeFilter === filter && styles.activeShadow
               ]}
+              onPress={() => handleFilterChange(filter)}
             >
-              <Text style={[styles.filterText, index === 0 && styles.filterTextActive]}>{filter}</Text>
+              <Text style={[styles.filterText, activeFilter === filter && styles.filterTextActive]}>{filter}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
 
-        {/* Order Cards */}
-        <View style={styles.orderList}>
-          {ORDERS.map(order => (
-            <View key={order.id} style={styles.orderCard}>
-              <View style={styles.cardHeader}>
-                <View>
-                  <Text style={styles.orderId}>ORDER #{order.id}</Text>
-                  <Text style={styles.orderDate}>{order.date}</Text>
-                </View>
-                <View style={[styles.statusBadge, { backgroundColor: order.statusBg }]}>
-                  <Text style={[styles.statusText, { color: order.statusText }]}>{order.status}</Text>
-                </View>
+        {loading ? (
+          <View style={styles.center}>
+            <ActivityIndicator size="large" color="#7C3AED" />
+          </View>
+        ) : error ? (
+          <View style={styles.center}>
+            <Text style={styles.errorText}>{error}</Text>
+            <TouchableOpacity style={styles.retryBtn} onPress={fetchOrders}>
+              <Text style={styles.retryBtnText}>Retry</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          /* Order Cards */
+          <View style={styles.orderList}>
+            {filteredOrders.length === 0 ? (
+              <View style={styles.emptyState}>
+                <Text style={styles.emptyText}>No orders found.</Text>
               </View>
+            ) : (
+              filteredOrders.map(order => {
+                const statusStyle = STATUS_STYLES[order.status] || STATUS_STYLES.pending;
+                return (
+                  <View key={order.id} style={styles.orderCard}>
+                    <View style={styles.cardHeader}>
+                      <View>
+                        <Text style={styles.orderId}>ORDER #HP-{order.id.toString().padStart(4, '0')}</Text>
+                        <Text style={styles.orderDate}>{formatDate(order.created_at)}</Text>
+                      </View>
+                      <View style={[styles.statusBadge, { backgroundColor: statusStyle.bg }]}>
+                        <Text style={[styles.statusText, { color: statusStyle.text }]}>
+                          {order.status.replace('_', ' ')}
+                        </Text>
+                      </View>
+                    </View>
 
-              <View style={styles.cardBody}>
-                <View style={styles.row}>
-                  <Text style={styles.rowLabel}>Service:</Text>
-                  <Text style={styles.rowValue}>{order.service}</Text>
-                </View>
-                <View style={styles.row}>
-                  <Text style={styles.rowLabel}>Game:</Text>
-                  <Text style={styles.rowValue}>{order.game}</Text>
-                </View>
-                <View style={styles.row}>
-                  <Text style={styles.rowLabel}>Total:</Text>
-                  <Text style={styles.priceValue}>₱{order.total.toFixed(2)}</Text>
-                </View>
-              </View>
+                    <View style={styles.cardBody}>
+                      <View style={styles.row}>
+                        <Text style={styles.rowLabel}>Service:</Text>
+                        <Text style={styles.rowValue}>{order.service_type}</Text>
+                      </View>
+                      <View style={styles.row}>
+                        <Text style={styles.rowLabel}>Game:</Text>
+                        <Text style={styles.rowValue}>{order.game}</Text>
+                      </View>
+                      <View style={styles.row}>
+                        <Text style={styles.rowLabel}>Total:</Text>
+                        <Text style={styles.priceValue}>₱{parseFloat(order.price).toFixed(2)}</Text>
+                      </View>
+                    </View>
 
-              <TouchableOpacity style={styles.detailsBtn}>
-                <Text style={styles.detailsBtnText}>View Details</Text>
-              </TouchableOpacity>
-            </View>
-          ))}
-        </View>
+                    <TouchableOpacity 
+                      style={styles.detailsBtn} 
+                      onPress={() => router.push(`/orders/${order.id}` as any)}
+                    >
+                      <Text style={styles.detailsBtnText}>View Details</Text>
+                    </TouchableOpacity>
+                  </View>
+                );
+              })
+            )}
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -116,6 +209,35 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F8FAFC',
+  },
+  center: {
+    padding: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  errorText: {
+    color: '#EF4444',
+    fontSize: 14,
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  retryBtn: {
+    backgroundColor: '#7C3AED',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  retryBtnText: {
+    color: '#FFF',
+    fontWeight: '700',
+  },
+  emptyState: {
+    padding: 40,
+    alignItems: 'center',
+  },
+  emptyText: {
+    color: '#64748B',
+    fontSize: 16,
   },
   scrollContent: {
     paddingBottom: 100,
