@@ -190,7 +190,7 @@ export default function OrdersScreen() {
 
                     <TouchableOpacity 
                       style={styles.detailsBtn} 
-                      onPress={() => router.push(`/orders/${order.id}` as any)}
+                      onPress={() => router.push({ pathname: '/order-detail', params: { id: order.id } } as any)}
                     >
                       <Text style={styles.detailsBtnText}>View Details</Text>
                     </TouchableOpacity>
