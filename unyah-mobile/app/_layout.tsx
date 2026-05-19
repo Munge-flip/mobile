@@ -21,6 +21,8 @@ export default function RootLayout() {
         <Stack.Screen name="genshin" options={{ headerShown: false }} />
         <Stack.Screen name="hsr" options={{ headerShown: false }} />
         <Stack.Screen name="zzz" options={{ headerShown: false }} />
+        <Stack.Screen name="edit-profile" options={{ headerShown: false }} />
+        <Stack.Screen name="change-password" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
       </Stack>
       <StatusBar style="auto" />

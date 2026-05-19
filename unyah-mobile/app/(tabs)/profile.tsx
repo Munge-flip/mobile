@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,12 +8,109 @@ import {
   SafeAreaView,
   StatusBar,
   Image,
+  ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { API_URL, ENDPOINTS } from '@/constants/api';
+
+interface UserData {
+  name: string;
+  email: string;
+  phone: string;
+  role: string;
+}
 
 export default function ProfileScreen() {
   const router = useRouter();
+  const [user, setUser] = useState<UserData>({
+    name: 'Traveler',
+    email: '',
+    phone: '',
+    role: 'traveler',
+  });
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [completedOrders, setCompletedOrders] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const token = await AsyncStorage.getItem('auth_token');
+      const storedUser = await AsyncStorage.getItem('user');
+
+      if (!token) {
+        router.replace('/login');
+        return;
+      }
+
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+
+      const headers = { Authorization: `Bearer ${token}` };
+
+      // Fetch Profile & Orders in parallel
+      const [profileRes, ordersRes] = await Promise.all([
+        axios.get(ENDPOINTS.profile, { headers }),
+        axios.get(ENDPOINTS.orders, { headers })
+      ]);
+
+      if (profileRes.data.success) {
+        const freshUser = profileRes.data.data;
+        setUser(freshUser);
+        await AsyncStorage.setItem('user', JSON.stringify(freshUser));
+      }
+
+      if (ordersRes.data.success) {
+        const orders = ordersRes.data.data;
+        setTotalOrders(orders.length);
+        const completed = orders.filter((o: any) => o.status === 'completed' || o.status === 'Completed').length;
+        setCompletedOrders(completed);
+      }
+
+    } catch (error: any) {
+      console.error('Error fetching profile data:', error);
+      if (error.response?.status === 401) {
+        handleSignOut();
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await AsyncStorage.clear();
+      router.replace('/login');
+    } catch (error) {
+      Alert.alert('Error', 'Failed to sign out. Please try again.');
+    }
+  };
+
+  const getInitials = (name: string) => {
+    return name.slice(0, 2).toUpperCase();
+  };
+
+  const capitalize = (s: string) => {
+    if (!s) return '';
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  };
+
+  if (loading && !user.email) {
+    return (
+      <SafeAreaView style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+        <ActivityIndicator size="large" color="#7C3AED" />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -34,13 +131,13 @@ export default function ProfileScreen() {
           <View style={styles.userInfoRow}>
             <View style={styles.avatarContainer}>
               <View style={styles.avatarPlaceholder}>
-                <Text style={styles.avatarText}>JD</Text>
+                <Text style={styles.avatarText}>{getInitials(user.name)}</Text>
               </View>
             </View>
             <View>
-              <Text style={styles.userName}>John Doe</Text>
+              <Text style={styles.userName}>{user.name}</Text>
               <View style={styles.badge}>
-                <Text style={styles.badgeText}>Traveler</Text>
+                <Text style={styles.badgeText}>{capitalize(user.role)}</Text>
               </View>
             </View>
           </View>
@@ -48,11 +145,11 @@ export default function ProfileScreen() {
           <View style={styles.statsGrid}>
             <View style={styles.statBox}>
               <Text style={styles.statLabel}>Total Orders</Text>
-              <Text style={styles.statValue}>12</Text>
+              <Text style={styles.statValue}>{totalOrders}</Text>
             </View>
             <View style={styles.statBox}>
               <Text style={styles.statLabel}>Completed</Text>
-              <Text style={styles.statValue}>10</Text>
+              <Text style={styles.statValue}>{completedOrders}</Text>
             </View>
           </View>
         </View>
@@ -63,15 +160,18 @@ export default function ProfileScreen() {
           <View style={styles.detailsCard}>
             <View style={styles.detailItem}>
               <Text style={styles.detailLabel}>Email Address</Text>
-              <Text style={styles.detailValue}>john.doe@example.com</Text>
+              <Text style={styles.detailValue}>{user.email}</Text>
             </View>
             <View style={[styles.detailItem, { borderBottomWidth: 0 }]}>
               <Text style={styles.detailLabel}>Phone Number</Text>
-              <Text style={styles.detailValue}>+63 912 345 6789</Text>
+              <Text style={styles.detailValue}>{user.phone || 'Not set'}</Text>
             </View>
           </View>
 
-          <TouchableOpacity style={styles.editBtn}>
+          <TouchableOpacity 
+            style={styles.editBtn}
+            onPress={() => router.push('/edit-profile')}
+          >
             <Text style={styles.editBtnText}>Edit Information</Text>
           </TouchableOpacity>
         </View>
@@ -80,7 +180,7 @@ export default function ProfileScreen() {
         <View style={styles.dangerZone}>
           <TouchableOpacity 
             style={styles.signOutBtn}
-            onPress={() => router.replace('/login')}
+            onPress={handleSignOut}
           >
             <IconSymbol name="rectangle.portrait.and.arrow.right" size={20} color="#EF4444" />
             <Text style={styles.signOutText}>Sign Out</Text>

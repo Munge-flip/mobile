@@ -11,6 +11,7 @@ export const ENDPOINTS = {
   
   // User
   profile: `${API_URL}/user/profile`,
+  password: `${API_URL}/user/password`,
   orders: `${API_URL}/user/orders`,
   transactions: `${API_URL}/user/transactions`,
 };
