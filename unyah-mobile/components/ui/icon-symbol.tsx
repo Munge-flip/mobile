@@ -31,6 +31,8 @@ const MAPPING = {
   'message.fill': 'message',
   'rectangle.portrait.and.arrow.right': 'logout',
   'gearshape.fill': 'settings',
+  'paperclip': 'attach-file',
+  'arrow.up': 'send',
 } as IconMapping;
 
 /**
